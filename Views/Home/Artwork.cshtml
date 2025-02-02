@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artwork</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        .artwork-section {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .artwork-section h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .artwork-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .artwork-card {
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 200px;
+            height: 250px; /* Default height */
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s, border-width 0.3s, border-color 0.3s, width 0.3s, height 0.3s;
+        }
+
+            .artwork-card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+                border-color: black; /* Black border on hover */
+                border-width: 5px; /* Thicker border on hover */
+                width: 220px; /* Increased width */
+                height: 270px; /* Increased height */
+            }
+
+        .artwork-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .artwork-card a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+            display: block;
+            margin: 10px 0;
+            transition: color 0.3s;
+        }
+
+        .artwork-card a:hover {
+            color: #0056b3;
+        }
+
+        .view-all-button {
+            background-color: #000; /* Black button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-top: 20px;
+            width: 200px; /* Same width as artwork cards */
+            text-align: center;
+        }
+
+        .view-all-button:hover {
+            background-color: #333; /* Darker black on hover */
+            transform: scale(1.1);
+        }
+
+
+        }
+    </style>
+</head>
+<body>
+    <div class="artwork-section">
+        <div class="artwork-container">
+            <div class="artwork-card">
+                <!-- Acrylic Painting Card -->
+                <a href="@Url.Action("AcrylicPaintings", "Home")">
+                    <img src="~/Images/Acraylic Painting.jpeg" alt="Acrylic Painting">
+                    <h3>Acrylic Painting</h3>
+                </a>
+
+            </div>
+            <div class="artwork-card">
+                <a href="@Url.Action("Drawings", "Home")">
+                    <img src="~/Images/Drawings.jpeg" alt="Drawing">
+                    <h3>Drawing</h3>
+                </a>
+            </div>
+            <div class="artwork-card">
+                <a href="@Url.Action("MandalaArt", "Home")">
+
+                    <img src="~/Images/mandala art.jpg" alt="Mandala Art">
+                    <h3>Mandala Art</h3>
+                </a>
+            </div>
+            <div class="artwork-card">
+                <a href="@Url.Action("Anime", "Home")">
+                    <img src="~/Images/animee.jpg" alt="Anime">
+                    <h3>Anime</h3>
+                </a>
+            </div>
+            <div class="artwork-card">
+                <a href="@Url.Action("OilPainting", "Home")">
+                    <img src="~/Images/oil Painting.jpeg" alt="Oil Painting">
+                    <h3>Oil Painting</h3>
+                </a>
+            </div>
+            <div class="view-all-container">
+                <a href="@Url.Action("ArtworkGallery", "Home")" class="view-all-button">View All</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

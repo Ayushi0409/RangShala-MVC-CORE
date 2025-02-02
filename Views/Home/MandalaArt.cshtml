@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MandalaArt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        .acrylic-painting-section {
+            padding: 40px 20px;
+            text-align: left;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .section-header .line {
+                display: inline-block;
+                width: 80px;
+                height: 3px;
+                background-color: #333;
+                margin: 0 auto 10px;
+            }
+
+            .section-header h2 {
+                font-size: 2.5em;
+                color: #333;
+                margin: 0;
+            }
+
+        .artwork-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            justify-content: center;
+            padding: 0 10px;
+        }
+
+        .artwork-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative; /* For positioning the overlay */
+            width: 300px;
+            margin: auto;
+        }
+
+            .artwork-card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .artwork-card img {
+                width: 300px;
+                height: 300px;
+                object-fit: cover;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .artwork-card h3 {
+                font-size: 1.2em;
+                margin: 10px 0 5px;
+                color: #333;
+            }
+
+            .artwork-card p {
+                margin: 5px 0;
+                color: #666;
+                font-size: 0.9em;
+            }
+
+                .artwork-card p:last-child {
+                    font-weight: bold;
+                    color: #000;
+                }
+
+            .artwork-card .artist-name {
+                font-style: italic;
+                color: #555;
+            }
+
+        /* Hover overlay for buttons */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.3s;
+        }
+
+        .artwork-card:hover .overlay {
+            opacity: 1; /* Show overlay on hover */
+        }
+
+        .overlay button {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+
+            .overlay button:hover {
+                background-color: white;
+                color: black;
+            }
+
+        .overlay .view-btn {
+            background-color: #ccc;
+            color: #000;
+        }
+
+            .overlay .view-btn:hover {
+                background-color: #666;
+                color: #fff;
+            }
+    </style>
+</head>
+<body>
+    <div class="acrylic-painting-section">
+        <div class="section-header">
+            <div class="line"></div>
+            <h2>Mandala Art</h2>
+        </div>
+        <div class="artwork-container">
+            <div class="artwork-card">
+                <img src="~/Images/mandala1.jpg" alt="Mandala Bhat">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Mandala Bhat</h3>
+                <p class="artist-name">Ayushi Babariya</p>
+                <p>INR 200</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/mandala2.jpg" alt="Wall Decor ">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Wall Decor</h3>
+                <p class="artist-name">Ayushi Babariya</p>
+                <p>INR 1000</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/mandala3.jpg" alt="Shiv">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Shiv</h3>
+                <p class="artist-name">Ayushi Babariya</p>
+                <p>INR 700</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/mandala4.jpg" alt="Eye">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Eye</h3>
+                <p class="artist-name">Ayushi Babariya</p>
+                <p>INR 500</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/mandala5.jpg" alt="Beautiful Design">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Beautiful Design</h3>
+                <p class="artist-name">Ayushi Babariya</p>
+                <p>INR 100</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/mandala6.jpg" alt="TajMahal">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>TajMahal</h3>
+                <p class="artist-name">Ayushi Babariya</p>
+                <p>INR 1000</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/mandala7.jpg" alt="Mandala Bhat">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Mandala Bhat</h3>
+                <p class="artist-name">Ayushi Babariya</p>
+                <p>INR 700</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/mandala8.jpg" alt="Owl">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Owl</h3>
+                <p class="artist-name">Ayushi Babariya</p>
+                <p>INR 300</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/mandala9.jpg" alt="Hanuman Dada">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Hanuman Dada</h3>
+                <p class="artist-name">Ayushi Babariya</p>
+                <p>INR 700</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

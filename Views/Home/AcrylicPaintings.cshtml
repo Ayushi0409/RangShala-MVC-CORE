@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acrylic Paintings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        .acrylic-painting-section {
+            padding: 40px 20px;
+            text-align: left;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .section-header .line {
+                display: inline-block;
+                width: 80px;
+                height: 3px;
+                background-color: #333;
+                margin: 0 auto 10px;
+            }
+
+            .section-header h2 {
+                font-size: 2.5em;
+                color: #333;
+                margin: 0;
+            }
+
+        .artwork-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            justify-content: center;
+            padding: 0 10px;
+        }
+
+        .artwork-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative; /* For positioning the overlay */
+            width: 300px;
+            margin: auto;
+        }
+
+            .artwork-card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .artwork-card img {
+                width: 300px;
+                height: 300px;
+                object-fit: cover;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .artwork-card h3 {
+                font-size: 1.2em;
+                margin: 10px 0 5px;
+                color: #333;
+            }
+
+            .artwork-card p {
+                margin: 5px 0;
+                color: #666;
+                font-size: 0.9em;
+            }
+
+                .artwork-card p:last-child {
+                    font-weight: bold;
+                    color: #000;
+                }
+
+            .artwork-card .artist-name {
+                font-style: italic;
+                color: #555;
+            }
+
+        /* Hover overlay for buttons */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.3s;
+        }
+
+        .artwork-card:hover .overlay {
+            opacity: 1; /* Show overlay on hover */
+        }
+
+        .overlay button {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+
+            .overlay button:hover {
+                background-color: white;
+                color: black;
+            }
+
+        .overlay .view-btn {
+            background-color: #ccc;
+            color: #000;
+        }
+
+            .overlay .view-btn:hover {
+                background-color: #666;
+                color: #fff;
+            }
+    </style>
+</head>
+<body>
+    <div class="acrylic-painting-section">
+        <div class="section-header">
+            <div class="line"></div>
+            <h2>Acrylic Paintings</h2>
+        </div>
+        <div class="artwork-container">
+            <div class="artwork-card">
+                <img src="~/Images/Shreenathji.jpg" alt="Shree Nathji">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Shree Nathji</h3>
+                <p class="artist-name">Ayushi Babariya</p>
+                <p>INR 4500</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/gouachepainting.jpg" alt="Gouache Painting">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Gouache Painting</h3>
+                <p class="artist-name">Ayushi Babariya</p>
+                <p>INR 1000</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/Ganpatibappa.jpg" alt="Ganpati Bappa">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Ganpati Bappa</h3>
+                <p class="artist-name">Niyati Agravat</p>
+                <p>INR 700</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/NightPai.jpg" alt="Night Pai">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Night Pai</h3>
+                <p class="artist-name">Niyati Agravat</p>
+                <p>INR 500</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/HousePainting.jpg" alt="House Painting">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>House Painting</h3>
+                <p class="artist-name">Niyati Agravat</p>
+                <p>INR 700</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/RainyDay.jpg" alt="Rainy Day">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Rainy Day</h3>
+                <p class="artist-name">Ayushi Babariya</p>
+                <p>INR 1000</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/HillView.jpg" alt="Hill View">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Hill View</h3>
+                <p class="artist-name">Niyati Agravat</p>
+                <p>INR 700</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/HanumanDada.jpg" alt="Hanuman Dada">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Hanuman Dada</h3>
+                <p class="artist-name">Ayushi Babariya</p>
+                <p>INR 300</p>
+            </div>
+            <div class="artwork-card">
+                <img src="~/Images/SunrisePainting.jpg" alt="Sunrise Painting">
+                <div class="overlay">
+                    <button class="view-btn">View</button>
+                    <button>Add to Cart</button>
+                </div>
+                <h3>Sunrise Painting</h3>
+                <p class="artist-name">Niyati Agravat</p>
+                <p>INR 700</p>
+            </div>
+        </div>
+    </div>
+    !-- Add this script at the bottom -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".add-to-cart-btn").click(function () {
+                var itemName = $(this).closest(".artwork-card").find("h3").text();
+                var itemPrice = $(this).closest(".artwork-card").find("p:last").text().replace("INR ", "");
+
+                $.ajax({
+                    url: '@Url.Action("AddToCart", "Cart")',
+                    type: 'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify({ name: itemName, price: itemPrice }),
+                    success: function (response) {
+                        alert(response.message); // Show confirmation
+                    },
+                    error: function () {
+                        alert("Failed to add to cart. Try again.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

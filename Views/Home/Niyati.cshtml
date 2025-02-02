@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Niyati Agravat";
+}
+
+<style>
+    body {
+        background-color: #f5f5f5;
+        font-family: Arial, sans-serif;
+    }
+
+    .artist-profile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 80%;
+        margin: 50px auto;
+        padding: 20px;
+        border: 2px solid black;
+        background: white;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+        /* Show animation when the page loads */
+        .artist-profile.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    .artist-image {
+        flex: 1;
+        text-align: center;
+        padding-right: 20px;
+    }
+
+        .artist-image img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid black;
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+            .artist-image img:hover {
+                transform: scale(1.05);
+                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+            }
+
+    .artist-info {
+        flex: 2;
+        text-align: left;
+        opacity: 0;
+        transform: translateX(-30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .artist-profile.loaded .artist-info {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .artist-info h1 {
+        font-size: 32px;
+        font-weight: bold;
+        border-bottom: 2px solid black;
+        padding-bottom: 5px;
+    }
+
+    .artist-info p {
+        font-size: 18px;
+        line-height: 1.6;
+        transition: color 0.3s ease-in-out;
+    }
+
+        .artist-info p:hover {
+            color: #444;
+        }
+</style>
+
+<div class="artist-profile" id="artistProfile">
+    <!-- Left Image Section -->
+    <div class="artist-image">
+        <img src="~/Images/NiyatiAgravat.jpeg" alt="Niyati Agravat">
+    </div>
+
+    <!-- Right Content Section -->
+    <div class="artist-info">
+        <h1>Niyati Agravat</h1>
+        <p>
+            Niyati's passion for art is deeply rooted in her love for anime and oil painting. With a keen eye for detail, she brings characters to life through rich textures and vibrant colors. Her work seamlessly blends traditional oil painting techniques with the expressive storytelling of anime.
+        </p>
+
+        <p>
+            She draws inspiration from various art styles, infusing each piece with emotion and depth. Whether crafting dynamic action scenes or serene portraits, her paintings capture the essence of her subjects in a way that feels both nostalgic and innovative.
+        </p>
+
+        <p>
+            <strong>Her Art:</strong> Niyati believes in pushing artistic boundaries, creating immersive anime-inspired oil paintings that evoke strong emotions and tell captivating stories.
+        </p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("artistProfile").classList.add("loaded");
+    });
+</script>
