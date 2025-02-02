@@ -1,49 +1,143 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RangShala</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/RangShala.styles.css" asp-append-version="true" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Rang Shala</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/site.css">
 </head>
 <body>
+    <!-- Header Section -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">RangShala</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+        <!-- Logo and Title -->
+        <div class="logo-section">
+            <img src="~/Images/logo.png" alt="Rang Shala Logo" class="logo">
+            <h1 class="rangshala-text">Rang Shala</h1>
+        </div>
+
+        <!-- Navigation Bar with Icons -->
+        <div class="nav-icons-container">
+            <!-- Left Icons -->
+            <div class="icon-row left-icons">
+                <a href="https://www.instagram.com/rangshaa1a/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
             </div>
-        </nav>
+
+            <!-- Navigation Menu -->
+            <nav class="nav-bar">
+                <ul class="menu">
+                    <li>@Html.ActionLink("About Us", "About", "Home")</li>
+                    <li>@Html.ActionLink("Artwork", "Artwork", "Home")</li>
+                    <li>@Html.ActionLink("Artist", "Artist", "Home")</li>
+                    <li>@Html.ActionLink("Bespoke Services", "Bespoke", "Home")</li>
+                    <li>@Html.ActionLink("Join Us", "Join", "Home")</li>
+                    <li>@Html.ActionLink("Curator Consult", "Consult", "Home")</li>
+
+                </ul>
+            </nav>
+
+
+            <!-- Right Icons -->
+            <div class="icon-row right-icons">
+                <form action="/Home/Search" method="get" class="search-form">
+                    <input type="text" name="query" class="search-input" placeholder="Search..." />
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+                <a href="#"><i class="fas fa-comment-dots"></i></a>
+                <a href="@Url.Action("LoginRegister", "Home")"><i class="fas fa-user"></i></a>
+                <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </div>
     </header>
+
+    <!-- Main Content -->
     <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        @RenderBody()
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - RangShala - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <!-- Image and Text Section -->
+    <div class="about-section">
+        <div class="back1-image-container">
+            <img src="~/Images/Back1.jpg" alt="Back1 Image" class="back1-image">
         </div>
+        <div class="about-content">
+            <!-- Decorative line -->
+            <div class="decorative-line"></div>
+            <h1>Welcome, to the<br /> Rang Shala<br /></h1>
+            <h3>A Space For Creativity to Break Free. Where Every Artist Approach Finds a Home</h3>
+
+            <p>
+                The Rang Shala is a project born out of a passion for creative excellence. Its creators—Niyati Agravat and Ayush Babariya—are synonymous with art, culture, and innovation.
+                Three distinct, dynamic, and fiercely individualistic styles come together to form this unique collective. Ultimately, a love for the arts is the roof above this reflective, lively house.
+            </p>
+            <p>
+                Every form of visual expression has an important place in The Ra. This is a home of multiple art forms, housing everything from pieces inspired by nature that take you back to the basics, to photographs that capture and immortalize fleeting moments.
+            </p>
+            <p>
+                At the heart of this endeavor is a commitment to the Indian artistic community. To that end, The Rang Shala keeps its doors open for artists from all over the country, giving homegrown talent an opportunity to showcase their work on a global platform.
+            </p>
+            <p>Once again, welcome to The Rang Shala. We are delighted to have you here.</p>
+        </div>
+    </div>
+
+    <!-- Featured Artist Section -->
+    <div class="featured-artist-section">
+        <div class="decorative-line"></div>
+        <h1>Featured Artist</h1>
+        <div class="artist-grid">
+            <div class="artist-card">
+                <img src="~/Images/NiyatiAgravat.jpeg" alt="Niyati Agravat" class="artist-photo">
+                <h3>Niyati Agravat</h3>
+                <a href="@Url.Action("Niyati", "Home")" class="explore-button">Explore</a>
+            </div>
+            <div class="artist-card">
+                <img src="~/Images/AyushiBabariya.jpeg" alt="Ayushi Babariya" class="artist-photo">
+                <h3>Ayushi Babariya</h3>
+                <a href="@Url.Action("Ayushi", "Home")" class="explore-button">Explore</a>
+            </div>
+        </div>
+    </div>
+    <!-- Why RangShala Section -->
+    <div class="why-rangshala-section">
+        <!-- Decorative Line -->
+        <div class="decorative-line"></div>
+
+        <!-- Title -->
+        <h1 class="why-title">Why RangShala?</h1>
+
+        <!-- Images and Text in One Row -->
+        <div class="why-row">
+            <!-- Genuine -->
+            <div class="why-item">
+                <img src="~/Images/Genuine.jpeg" alt="Genuine Artwork" class="why-image">
+                <h3>Genuine</h3>
+                <p>Take home a unique piece of art, sourced directly from the artists and personally reviewed and verified by the founders.</p>
+            </div>
+
+            <!-- Distinctive -->
+            <div class="why-item">
+                <img src="~/Images/Distinctive.jpeg" alt="Distinctive Artwork" class="why-image">
+                <h3>Distinctive</h3>
+                <p>The House of Creativity is driven by artists who truly believe in the power of all things visual. Become an owner of exclusive artwork made by passionate, talented creators with a unique understanding of creative expression.</p>
+            </div>
+
+            <!-- Vibrant -->
+            <div class="why-item">
+                <img src="~/Images/Vibrant.png" alt="Vibrant Artwork" class="why-image">
+                <h3>Vibrant</h3>
+                <p>Pick and choose from a range of diverse and dynamic artistic styles - all under one roof. Brighten up your office or add a touch of colour to your home with prints and paintings from upcoming as well as established artists across India.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Rang Shala. All rights reserved.</p>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

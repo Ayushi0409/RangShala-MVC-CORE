@@ -1,22 +1,394 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
-  margin-bottom: 60px;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Logo Section */
+.logo-section {
+    text-align: center;
+    margin: 20px 0;
+}
+
+    .logo-section .logo {
+        width: 150px; /* Logo size */
+        height: 150px;
+    }
+
+    .logo-section .rangshala-text {
+        font-size: 28px;
+        font-weight: 600;
+        color: #333;
+        margin-top: 0px;
+        font-family: 'Georgia', serif;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+/* Navigation and Icons */
+.nav-icons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.icon-row {
+    display: flex;
+    gap: 20px;
+}
+
+    .icon-row a {
+        font-size: 20px;
+        transition: color 0.3s;
+    }
+
+    .icon-row .fa-instagram {
+        color: #e4405f;
+    }
+
+    .icon-row .fa-facebook-f {
+        color: #3b5998;
+    }
+
+    .icon-row .fa-twitter {
+        color: #1da1f2;
+    }
+
+    .icon-row .fa-search,
+    .icon-row .fa-comment-dots,
+    .icon-row .fa-user,
+    .icon-row .fa-shopping-cart {
+        color: black;
+    }
+
+    .icon-row a:hover {
+        color: #007bff;
+    }
+
+/* Navigation Menu */
+.nav-bar {
+    text-align: center;
+    flex-grow: 1;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 0;
+    padding: 15px 0;
+}
+
+    .menu li a {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        transition: color 0.3s;
+    }
+
+        .menu li a:hover {
+            color: #007bff;
+        }
+/* Decorative line above the heading */
+.decorative-line {
+    width: 100px; /* Adjust width */
+    height: 4px; /* Adjust thickness */
+    background-color: #153448; /* Line color */
+    margin: 0 auto 10px; /* Center it and add spacing below */
+    border-radius: 2px; /* Optional: Rounded edges */
+}
+
+
+/* Main Content */
+.container {
+    margin: 20px;
+}
+/* Decorative line above the heading */
+.decorative-line {
+    width: 100px; /* Adjust width */
+    height: 4px; /* Adjust thickness */
+    background-color: #153448; /* Line color */
+    border-radius: 2px; /* Optional: Rounded edges */
+    margin: 0 0 10px 0;
+}
+
+.vertical-line-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the line and text */
+    margin-bottom: 15px; /* Adjust spacing below */
+}
+
+.vertical-line {
+    width: 4px; /* Thickness of the line */
+    height: 40px; /* Height of the line */
+    background-color: #153448; /* Color of the line */
+    border-radius: 2px; /* Optional: rounded edges */
+}
+
+
+/* Image and Text Section */
+.about-section {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 40px 50px;
+}
+
+.back1-image-container {
+    flex: 1;
+    text-align: left;
+}
+
+.back1-image {
+    width: 700px;
+    height: 550px;
+    opacity: 0.8;
+    border-radius: 8px;
+}
+
+.about-content {
+    flex: 1;
+    max-width: 600px;
+    line-height: 1.8;
+    color: #333;
+    font-family: 'Georgia', serif;
+}
+
+    .about-content h2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #153448;
+    }
+
+    .about-content h4 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #4E4E61;
+        margin-top: 10px;
+    }
+
+    .about-content p {
+        margin-top: 15px;
+        text-align: justify;
+        font-size: 14px;
+    }
+/* Featured Artist Section */
+.featured-artist-section {
+    text-align: left; /* Align text to the left */
+    padding: 40px 50px;
+    background-color: #f8f9fa;
+    margin: 40px 0;
+}
+
+    .featured-artist-section h1 {
+        margin-bottom: 20px;
+        color: #153448;
+    }
+
+    .featured-artist-section h2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #153448;
+        margin-bottom: 20px;
+    }
+
+/* Artist Photo with Hover Effect */
+.artist-photo {
+    width: 100%;
+    height: auto;
+    border-radius: 0; /* Remove rounded corners */
+    margin-bottom: 15px;
+    border: 3px solid #ccc; /* Optional: Add a frame-like effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+    .artist-photo:hover {
+        transform: scale(1.05); /* Slight zoom effect */
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Add shadow effect */
+        border-color: #153448; /* Change border color */
+    }
+
+.artist-grid {
+    display: flex;
+    justify-content: center;
+    gap: 200px; /* Add more spacing between the cards */
+    margin-top: 20px;
+}
+
+.artist-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    padding: 20px;
+    width: 250px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.featured-artist-container {
+    text-align: left; /* Align content to the left */
+    margin-top: 20px; /* Add space above if needed */
+    align-items: flex-start; /* Align everything to the left */
+}
+
+.featured-artist-title {
+    font-size: 24px; /* Adjust font size */
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0; /* Add space between the line and the text */
+}
+
+.decorative-line {
+    width: 100px; /* Adjust width */
+    height: 4px; /* Adjust thickness */
+    background-color: #153448; /* Line color */
+    border-radius: 2px; /* Optional: Rounded edges */
+    margin-bottom: 5px; /* Add space between the line and the text */
+}
+
+
+
+
+.artist-card h3 {
+    font-size: 18px;
+    color: #333;
+    margin: 10px 0;
+}
+
+.explore-button {
+    background-color: #153448;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    .explore-button:hover {
+        background-color: #007bff;
+    }
+
+/* Why RangShala Section */
+.why-rangshala-section {
+    text-align: left;
+    padding: 40px 50px;
+    background-color: #fff;
+    margin: 40px 0;
+}
+
+.why-title {
+    text-align: left;
+    font-size: 24px;
+    color: #153448;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Why Row - All Images in One Row */
+.why-row {
+    display: flex;
+    justify-content: space-between; /* Space between each item */
+    gap: 20px; /* Add spacing between items */
+    align-items: flex-start; /* Align items at the top */
+}
+
+/* Why Item */
+.why-item {
+    text-align: center; /* Center-align each image and text */
+    max-width: 300px; /* Limit the width of each item */
+}
+
+.why-image {
+    width: 200px /* Make the image responsive */
+    height: 250px; /* Fixed height for uniformity */
+    object-fit: cover; /* Ensure the image doesn't stretch */
+    margin-bottom: 10px; /* Space between the image and text */
+    border: none; /* Remove any border */
+    border-radius: 0; /* Ensure no rounded corners */
+}
+
+.why-item h3 {
+    font-size: 18px;
+    color: #153448;
+    margin-bottom: 10px;
+}
+
+.why-item p {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+}
+/* Search input and button styles */
+.search-form {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.search-input {
+    padding: 8px 15px;
+    font-size: 16px;
+    border: 2px solid #4E4E61;
+    border-radius: 5px;
+    width: 200px;
+}
+
+.search-button {
+    background: transparent;
+    border: none;
+    position: absolute;
+    right: 5px;
+    top: 0;
+    padding: 8px;
+    cursor: pointer;
+}
+
+    .search-button i {
+        font-size: 20px;
+        color: #4E4E61;
+    }
+
+.search-results {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+    .search-results li {
+        background-color: #f1f1f1;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .search-results li:hover {
+            background-color: #ddd;
+        }
+
+
+
+
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #f8f9fa;
+    border-top: 1px solid #ccc;
+    font-size: 14px;
 }
