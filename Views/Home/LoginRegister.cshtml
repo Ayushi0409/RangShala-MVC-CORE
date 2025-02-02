@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewBag.Title = "Login & Register";
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -80,53 +84,55 @@
         <div class="form-section">
             <h3>Sign in</h3>
             <p>Sign in to an existing account.</p>
-            <form>
+            <form method="post" action="@Url.Action("Login", "Account")">
+                @Html.AntiForgeryToken()
                 <div class="mb-3">
-                    <input type="email" class="form-control" placeholder="Enter Email" required>
+                    <input type="email" class="form-control" name="Email" placeholder="Enter Email" required>
                 </div>
                 <div class="mb-3">
                     <div class="input-group">
-                        <input type="password" class="form-control" id="loginPassword" placeholder="Enter Password" required>
+                        <input type="password" class="form-control" id="loginPassword" name="Password" placeholder="Enter Password" required>
                         <span class="input-group-text password-toggle" onclick="togglePassword('loginPassword')">👁</span>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-custom">Sign in & Continue</button>
-                <a href="#" class="d-block mt-2">Forgot Password?</a>
+                <a href="@Url.Action("ForgotPassword", "Account")" class="d-block mt-2">Forgot Password?</a>
             </form>
         </div>
 
         <!-- Registration Form -->
         <div class="form-section">
-            <h3>New to house of creativity</h3>
+            <h3>New to RangShala</h3>
             <p>Create your own account in a minute!</p>
-            <form>
+            <form method="post" action="@Url.Action("Register", "Account")">
+                @Html.AntiForgeryToken()
                 <div class="mb-3">
                     <label><strong>Title</strong></label><br>
-                    <input type="radio" name="title" value="Mr"> Mr
-                    <input type="radio" name="title" value="Ms"> Ms
-                    <input type="radio" name="title" value="Mrs"> Mrs
+                    <input type="radio" name="Title" value="Mr"> Mr
+                    <input type="radio" name="Title" value="Ms"> Ms
+                    <input type="radio" name="Title" value="Mrs"> Mrs
                 </div>
                 <div class="row g-2">
                     <div class="col-md-6">
-                        <input type="text" class="form-control" placeholder="First Name" required>
+                        <input type="text" class="form-control" name="FirstName" placeholder="First Name" required>
                     </div>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" placeholder="Last Name" required>
+                        <input type="text" class="form-control" name="LastName" placeholder="Last Name" required>
                     </div>
                 </div>
                 <div class="mb-3 mt-3">
-                    <input type="email" class="form-control" placeholder="Email Address" required>
+                    <input type="email" class="form-control" name="Email" placeholder="Email Address" required>
                 </div>
                 <div class="mb-3">
                     <div class="input-group">
                         <span class="input-group-text">+91</span>
-                        <input type="text" class="form-control" placeholder="Mobile Number" required>
+                        <input type="text" class="form-control" name="Mobile" placeholder="Mobile Number" required>
                     </div>
                 </div>
                 <div class="row g-2">
                     <div class="col-md-6">
                         <div class="input-group">
-                            <input type="password" class="form-control" id="registerPassword" placeholder="Enter Password" required>
+                            <input type="password" class="form-control" id="registerPassword" name="Password" placeholder="Enter Password" required>
                             <span class="input-group-text password-toggle" onclick="togglePassword('registerPassword')">👁</span>
                         </div>
                     </div>
@@ -139,11 +145,7 @@
                 </div>
                 <div class="form-check mb-3 mt-3">
                     <input type="checkbox" class="form-check-input" id="terms" required>
-                    <label class="form-check-label"> Yes, I agree to the House of Creativity <a href="#">Terms & condition</a> and <a href="#">Privacy Policy</a></label>
-                </div>
-                <div class="form-check mb-3">
-                    <input type="checkbox" class="form-check-input" id="news">
-                    <label class="form-check-label"> I would like to regularly receive House of Creativity Art News for free.</label>
+                    <label class="form-check-label">Yes, I agree to the <a href="#">Terms & Conditions</a>.</label>
                 </div>
                 <button type="submit" class="btn btn-custom">Sign up & Continue</button>
             </form>
@@ -153,11 +155,7 @@
     <script>
         function togglePassword(id) {
             var input = document.getElementById(id);
-            if (input.type === "password") {
-                input.type = "text";
-            } else {
-                input.type = "password";
-            }
+            input.type = input.type === "password" ? "text" : "password";
         }
     </script>
 </body>
