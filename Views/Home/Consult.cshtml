@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curator Consult - Rang Shala</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            color: #333;
+        }
+
+        .consult-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px;
+        }
+
+        .consult-content {
+            flex: 3;
+            margin-right: 40px;
+        }
+
+        .consult-box {
+            flex: 1;
+            background-color: white;
+            border: 1px solid white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px; /* Adjust the offset from the top */
+        }
+
+
+        .decorative-line {
+            width: 50px;
+            height: 4px;
+            background-color: #333;
+            margin-bottom: 20px;
+        }
+
+        h1, h2 {
+            font-weight: bold;
+            color: #000;
+        }
+
+        p {
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+
+        .consult-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .consult-item {
+            text-align: center;
+        }
+
+        .consult-item img {
+            width: 150px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .consult-item h3 {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .consult-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .consult-box .consult-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .consult-box .consult-button:hover {
+            background-color: #555;
+        }
+
+        .consult-box .note {
+            font-size: 12px;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        .how-to-collection {
+            background-color: #fff;
+            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .collection-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+            .collection-container h1 {
+                font-size: 28px;
+                font-weight: bold;
+                margin-bottom: 40px;
+                color: #000;
+                text-align: center;
+            }
+
+        .collection-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+            .collection-step img {
+                width: 150px;
+                height: auto;
+                margin-top: 5px;
+            }
+
+            .collection-step h3 {
+                font-size: 18px;
+                font-weight: bold;
+                color: #000;
+                margin-bottom: 10px;
+            }
+
+            .collection-step p {
+                margin: 0;
+                line-height: 1.6;
+            }
+
+        .collection-note {
+            font-size: 14px;
+            color: #666;
+            margin-top: 40px;
+            text-align: center;
+            font-style: italic;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="consult-container">
+        <div class="consult-content">
+            <div class="decorative-line"></div>
+            <h1>Here’s why you need a curator</h1>
+            <p>Everyone has their personal style when it comes to decorating their homes. When it comes to art, the pieces you choose to design your home can instantly change the entire aesthetic of a space. To many, purchasing art is a daunting thought...</p>
+            <div class="consult-grid">
+                <div class="consult-item">
+                    <img src="~/Images/cc1.png" alt="Signpost">
+                    <h3>Get all your questions answered</h3>
+                </div>
+                <div class="consult-item">
+                    <img src="~/Images/cc2.png" alt="Handshake">
+                    <h3>Make an informed decision</h3>
+                </div>
+                <div class="consult-item">
+                    <img src="~/Images/cc3.jpeg" alt="Frame">
+                    <h3>Helping you with visualization</h3>
+                </div>
+                <div class="consult-item">
+                    <img src="~/Images/cc9.png" alt="Puzzle">
+                    <h3>Help with choice and combination</h3>
+                </div>
+            </div>
+        </div>
+        <div class="consult-box">
+            <div class="decorative-line"></div>
+            <h2>Book a Consult!</h2>
+            <p>Whatever your concern may be, our curators will help you navigate the world of Artworks...</p>
+            <input type="text" placeholder="Enter Email/Phone No.">
+            <button class="consult-button">Request Consultation</button>
+            <p class="note">Submitting email/phone does not guarantee consultation. Our representative will get in touch with you regarding the next steps.</p>
+        </div>
+    </div>
+    <!-- New Section -->
+    <section class="how-to-collection">
+        <div class="collection-container">
+            <h1>How do I begin my collection?</h1>
+            <div class="collection-step">
+                <img src="~/Images/cc10.jpeg" alt="Set a Budget">
+                <div>
+                    <h3>Set A Budget</h3>
+                    <p>The expenses that come with building an art collection is one of the largest concerns people face when deliberating whether to begin collecting or not. To ensure that this factor does not create problems along the way, start with setting your budget. One of the best aspects of art is the variety – no matter how high or low your budget is, you will find many artworks that are suitable!</p>
+                </div>
+            </div>
+            <div class="collection-step">
+                <img src="~/Images/cc6.jpeg" alt="Begin Researching">
+                <div>
+                    <h3>Begin Researching</h3>
+                    <p>Once you’ve set your budget, it’s time to start the research process! Having knowledge of what’s available and tracking the trajectory of artists will give you a strong understanding of art and help you discover what kind of collector you want to be. Start researching with art publications that attract you and go from there!</p>
+                </div>
+            </div>
+            <div class="collection-step">
+                <img src="~/Images/cc7.jpeg" alt="Gradually Start to Begin">
+                <div>
+                    <h3>Gradually Start to Begin Your Collection</h3>
+                    <p>This is the stage that most people worry about most when thinking about collecting. However, once you have set your budget and done your research, you are guaranteed to have an idea of where you would like to begin. Start with a single piece of art that has caught your eye and has an element of meaning and engagement with you personally. Once you’ve started with a single piece, you will be motivated to continue and remember to continue reaching out for advice and guidance. Most importantly, choose artworks that make you happy when you look at them, since they will be decorating your personal space, personal meaning, and attraction is of utmost importance.</p>
+                </div>
+            </div>
+            <div class="collection-step">
+                <img src="~/Images/cc8.png" alt="Build and Use Your Network">
+                <div>
+                    <h3>Build and Use Your Network</h3>
+                    <p>As your art collection grows, don’t hesitate to contact curators and advisors that are within your network to ask for guidance, opinions, and any additional information that you might want to know. Asking for help with building your collection is not something that only applies to your initial stages but continues throughout and even after your collection is complete. Never shy away from building relationships and receiving that second opinion!</p>
+                </div>
+            </div>
+            <p class="collection-note">
+                These four steps are crucial in beginning and building your art collection(s). If you require special advisory for collecting art for a particular space from the HOC collection – our curators can serve you with a video conferencing call to understand your needs and space requirements.
+            </p>
+        </div>
+    </section>
+
+
+</body>
+</html>
