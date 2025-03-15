@@ -39,6 +39,15 @@
             margin-bottom: 20px;
         }
 
+        .offline-note {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
         .back-btn {
             display: inline-block;
             padding: 10px 20px;
@@ -63,6 +72,18 @@
             <p class="success-message">@TempData["SuccessMessage"]</p>
         }
         <p>Thank you for your order! We’ll send you a confirmation email shortly.</p>
+
+        @if (TempData["SuccessMessage"]?.ToString().Contains("Offline payment") == true)
+        {
+            // Generate a simple order ID for offline payment reference
+            var orderId = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
+            <div class="offline-note">
+                <p><strong>Offline Payment Instructions:</strong></p>
+                <p>Order ID: @orderId</p>
+                <p>Please complete your payment via cash on delivery or bank transfer within 3 days. Use the Order ID above as a reference. Contact us at support@rangshala.com for bank details or assistance.</p>
+            </div>
+        }
+
         <a href="@Url.Action("Index", "Home")" class="back-btn">Back to Home</a>
     </div>
 </body>

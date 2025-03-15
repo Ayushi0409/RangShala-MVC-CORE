@@ -91,7 +91,6 @@
                 color: #555;
             }
 
-        /* Hover overlay for buttons */
         .overlay {
             position: absolute;
             top: 0;
@@ -148,7 +147,7 @@
                 <img src="~/Images/oil1.jpg" alt="Ganpati Bappa">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button class="add-to-cart-btn" onclick="addToCart('oil1')">Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Ganpati Bappa </h3>
                 <p class="artist-name">Ayushi Babariya</p>
@@ -158,7 +157,7 @@
                 <img src="~/Images/oil2.jpg" alt="Window painting">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button class="add-to-cart-btn" onclick="addToCart('oil2')">Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Window Painting</h3>
                 <p class="artist-name">Ayushi Babariya</p>
@@ -168,7 +167,7 @@
                 <img src="~/Images/oil3.jpg" alt="Lady">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button class="add-to-cart-btn" onclick="addToCart('oil3')">Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Lady</h3>
                 <p class="artist-name">Ayushi Babariya</p>
@@ -178,18 +177,17 @@
                 <img src="~/Images/oil4.jpg" alt="Lazy girl">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button class="add-to-cart-btn" onclick="addToCart('oil4')">Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Lazy Girl</h3>
                 <p class="artist-name">Ayuhshi Babariya</p>
                 <p>INR 500</p>
             </div>
-
             <div class="artwork-card">
                 <img src="~/Images/oil5.jpg" alt="Nature">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button class="add-to-cart-btn" onclick="addToCart('oil5')">Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Nature</h3>
                 <p class="artist-name">Niyati Agravat</p>
@@ -199,7 +197,7 @@
                 <img src="~/Images/oil6.jpg" alt="Fruits">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button class="add-to-cart-btn" onclick="addToCart('oil6')">Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Fruits</h3>
                 <p class="artist-name">Ayushi Babariya</p>
@@ -209,7 +207,7 @@
                 <img src="~/Images/oil7.jpg" alt="Rose">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button class="add-to-cart-btn" onclick="addToCart('oil7')">Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Rose</h3>
                 <p class="artist-name">Niyati Agravat</p>
@@ -219,7 +217,7 @@
                 <img src="~/Images/oil8.jpg" alt="Love Birds">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button class="add-to-cart-btn" onclick="addToCart('oil8')">Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Love Birds</h3>
                 <p class="artist-name">Ayushi Babariya</p>
@@ -229,7 +227,7 @@
                 <img src="~/Images/oil9.jpg" alt="Bird">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button class="add-to-cart-btn" onclick="addToCart('oil9')">Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Bird</h3>
                 <p class="artist-name">Niyati Agravat</p>
@@ -239,7 +237,7 @@
                 <img src="~/Images/oil10.jpg" alt="House">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button class="add-to-cart-btn" onclick="addToCart('oil10')">Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>House</h3>
                 <p class="artist-name">Ayushi Babariya</p>
@@ -247,18 +245,47 @@
             </div>
         </div>
     </div>
-
     <script>
-        function addToCart(productId) {
-            var isLoggedIn = '@User.Identity.IsAuthenticated'.toLowerCase() === 'true';
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.artwork-card');
+                const name = card.querySelector('h3').textContent.trim();
+                const priceText = card.querySelector('p:last-child').textContent.trim();
+                const price = parseFloat(priceText.replace('INR ', ''));
+                addToCart(name, price);
+            });
+        });
 
-            if (!isLoggedIn) {
-                // Redirect to login page if user is not logged in
-                window.location.href = '@Url.Action("Login", "Account")';
-            } else {
-                // If logged in, proceed to add to cart (redirect to cart action)
-                window.location.href = '@Url.Action("AddToCart", "Cart")' + '?productId=' + productId;
-            }
+        function addToCart(name, price) {
+            const itemData = {
+                Name: name,
+                Price: price
+            };
+
+            fetch('/Cart/AddToCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(itemData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/Cart/Index';
+                } else {
+                    if (data.message.includes("log in")) {
+                        window.location.href = '/Account/Login';
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error adding to cart:', error);
+                alert('An error occurred while adding the item to the cart.');
+            });
         }
     </script>
 </body>

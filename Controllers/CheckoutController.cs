@@ -122,6 +122,16 @@ namespace RangShala.Controllers
             }
 
             var cartItems = _context.CartItems.Where(c => c.UserId == user.Id).ToList();
+            if (!cartItems.Any())
+            {
+                TempData["Error"] = "Your cart is empty. Add items to proceed.";
+                return RedirectToAction("Index", "Cart");
+            }
+
+            // Simulate payment processing
+            Console.WriteLine($"Simulated Payment - Name: {model.NameOnCard}, Card: {model.CardNumber}, Expiry: {model.ExpirationMonth}/{model.ExpirationYear}, CVV: {model.SecurityCode}");
+
+            // Clear the cart
             _context.CartItems.RemoveRange(cartItems);
             _context.SaveChanges();
 
@@ -130,8 +140,25 @@ namespace RangShala.Controllers
         }
 
         // GET: /Checkout/Confirmation
-        public IActionResult Confirmation()
+        public IActionResult Confirmation(bool offline = false)
         {
+            var user = HttpContext.Session.GetObjectFromJson<ApplicationUser>("User");
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (offline)
+            {
+                var cartItems = _context.CartItems.Where(c => c.UserId == user.Id).ToList();
+                if (cartItems.Any())
+                {
+                    _context.CartItems.RemoveRange(cartItems);
+                    _context.SaveChanges();
+                    TempData["SuccessMessage"] = "Offline payment initiated! Order placed successfully.";
+                }
+            }
+
             return View();
         }
     }

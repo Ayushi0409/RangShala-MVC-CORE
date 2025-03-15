@@ -39,10 +39,16 @@
             text-align: center;
         }
 
+            .payment-method span {
+                margin-right: 10px;
+                font-weight: 500;
+                color: #333;
+            }
+
             .payment-method img {
                 height: 30px;
                 margin: 0 5px;
-                vertical-align: middle; /* Ensures images align properly */
+                vertical-align: middle; /* Ensures images align properly with text */
             }
 
         .form-group {
@@ -123,10 +129,10 @@
         <h2>Credit Card Details</h2>
         <div class="payment-method">
             <span>Payment Method</span>
-            <img src="~/images/payment-icons/mastercard.png" alt="MasterCard">
-            <img src="~/images/payment-icons/visa.png" alt="Visa">
-            <img src="~/images/payment-icons/googlepay.png" alt="Google Pay">
-            <img src="~/images/payment-icons/amex.png" alt="American Express">
+            <img src="~/Images/Mastercard.png" alt="MasterCard">
+            <img src="~/Images/visa.png" alt="Visa">
+            <img src="~/Images/google-pay.png" alt="Google Pay">
+            <img src="~/Images/amex.png" alt="American Express">
         </div>
 
         <form asp-action="Payment" method="post">
@@ -169,7 +175,7 @@
 
             <div class="button-group">
                 <button type="submit" class="pay-btn">Pay</button>
-                <a href="@Url.Action("Confirmation", "Checkout")" class="pay-offline-btn">Pay Offline</a>
+                <a href="@Url.Action("Confirmation", "Checkout", new { offline = true })" class="pay-offline-btn">Pay Offline</a>
             </div>
         </form>
     </div>

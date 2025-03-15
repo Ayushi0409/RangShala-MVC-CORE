@@ -52,7 +52,7 @@
             overflow: hidden;
             text-align: center;
             transition: transform 0.3s, box-shadow 0.3s;
-            position: relative; /* For positioning the overlay */
+            position: relative;
             width: 300px;
             margin: auto;
         }
@@ -91,7 +91,6 @@
                 color: #555;
             }
 
-        /* Hover overlay for buttons */
         .overlay {
             position: absolute;
             top: 0;
@@ -102,12 +101,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            opacity: 0; /* Hidden by default */
+            opacity: 0;
             transition: opacity 0.3s;
         }
 
         .artwork-card:hover .overlay {
-            opacity: 1; /* Show overlay on hover */
+            opacity: 1;
         }
 
         .overlay button {
@@ -148,7 +147,7 @@
                 <img src="~/Images/anime1.jpg" alt="Giyu Tomiyoka">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Giyu Tomiyoka</h3>
                 <p class="artist-name">Niyati Agravat</p>
@@ -158,7 +157,7 @@
                 <img src="~/Images/anime2.jpg" alt="Muichiro Tokito">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Muichiro Tokito</h3>
                 <p class="artist-name">Niyati Agravat</p>
@@ -168,19 +167,19 @@
                 <img src="~/Images/anime3.jpg" alt="Ayanokoji">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Ayanokoji</h3>
                 <p class="artist-name">Niyati Agravat</p>
                 <p>INR 700</p>
             </div>
             <div class="artwork-card">
-                <img src="~/Images/anime4.jpg" alt="Mikey sano">
+                <img src="~/Images/anime4.jpg" alt="Mikey Sano">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
-                <h3>Mikey sano</h3>
+                <h3>Mikey Sano</h3>
                 <p class="artist-name">Niyati Agravat</p>
                 <p>INR 500</p>
             </div>
@@ -188,19 +187,19 @@
                 <img src="~/Images/anime5.jpg" alt="Minato Namikaze">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Minato Namikaze</h3>
                 <p class="artist-name">Niyati Agravat</p>
                 <p>INR 700</p>
             </div>
             <div class="artwork-card">
-                <img src="~/Images/anime6.jpg" alt="itachi Uchiha">
+                <img src="~/Images/anime6.jpg" alt="Itachi Uchiha">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
-                <h3>itachi Uchiha</h3>
+                <h3>Itachi Uchiha</h3>
                 <p class="artist-name">Niyati Agravat</p>
                 <p>INR 1000</p>
             </div>
@@ -208,7 +207,7 @@
                 <img src="~/Images/anime7.jpg" alt="Miku">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Miku</h3>
                 <p class="artist-name">Niyati Agravat</p>
@@ -218,7 +217,7 @@
                 <img src="~/Images/anime8.jpg" alt="Killua">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Killua</h3>
                 <p class="artist-name">Niyati Agravat</p>
@@ -228,7 +227,7 @@
                 <img src="~/Images/anime9.jpg" alt="Mikey Sano">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Mikey Sano</h3>
                 <p class="artist-name">Niyati Agravat</p>
@@ -236,5 +235,48 @@
             </div>
         </div>
     </div>
+    <script>
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.artwork-card');
+                const name = card.querySelector('h3').textContent.trim();
+                const priceText = card.querySelector('p:last-child').textContent.trim();
+                const price = parseFloat(priceText.replace('INR ', ''));
+                addToCart(name, price);
+            });
+        });
+
+        function addToCart(name, price) {
+            const itemData = {
+                Name: name,
+                Price: price
+            };
+
+            fetch('/Cart/AddToCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(itemData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/Cart/Index';
+                } else {
+                    if (data.message.includes("log in")) {
+                        window.location.href = '/Account/Login';
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error adding to cart:', error);
+                alert('An error occurred while adding the item to the cart.');
+            });
+        }
+    </script>
 </body>
 </html>
