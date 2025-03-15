@@ -1,0 +1,109 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f8f8f8;
+            margin: 0;
+        }
+
+        .login-container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+        }
+
+        .logo {
+            width: 80px;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            background: #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+            .input-group i {
+                margin-right: 10px;
+            }
+
+            .input-group input {
+                border: none;
+                background: none;
+                outline: none;
+                width: 100%;
+                font-size: 16px;
+            }
+
+        .login-button {
+            background: black;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .forgot-password {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="~/Images/logo.png" alt="Rang Shala Logo" class="logo">
+        <div class="title">Admin Login</div>
+
+        <form method="post" action="@Url.Action("Login", "Admin")">
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" name="email" placeholder="Email" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+
+            <button type="submit" class="login-button">Login</button>
+        </form>
+
+        @if (ViewBag.Message != null)
+        {
+            <p style="color: red;">@ViewBag.Message</p>
+        }
+
+        <div class="forgot-password">
+            <a href="#">Forgot password?</a>
+        </div>
+    </div>
+</body>
+</html>

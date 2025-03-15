@@ -1,0 +1,22 @@
+﻿<form method="post" action="@Url.Action("Register", "Account")">
+    @Html.AntiForgeryToken()
+    <div class="mb-3">
+        <input type="text" class="form-control" name="FullName" placeholder="Full Name" required>
+    </div>
+    <div class="mb-3">
+        <input type="email" class="form-control" name="Email" placeholder="Email Address" required>
+    </div>
+    <div class="mb-3">
+        <div class="input-group">
+            <input type="password" class="form-control" id="registerPassword" name="Password" placeholder="Enter Password" required>
+            <span class="input-group-text password-toggle" onclick="togglePassword('registerPassword')">👁</span>
+        </div>
+    </div>
+    <div class="mb-3">
+        <div class="input-group">
+            <input type="password" class="form-control" id="confirmPassword" name="ConfirmPassword" placeholder="Confirm Password" required>
+            <span class="input-group-text password-toggle" onclick="togglePassword('confirmPassword')">👁</span>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-custom">Sign up & Continue</button>
+</form>

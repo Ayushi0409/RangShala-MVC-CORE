@@ -1,0 +1,57 @@
+﻿@model RangShala.Models.Artwork
+
+@{
+    ViewBag.Title = "Dashboard / Acrylic Painting";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main-content">
+    <div class="top-bar">
+        <h1>Dashboard / Acrylic Painting</h1>
+        <a href="#" class="user-btn">AYUSH BABARIYA</a>
+    </div>
+
+    <div style="background-color: #007bff; padding: 10px; color: white; font-size: 20px; margin-bottom: 20px;">
+        <i class="fas fa-plus"></i> Add Acrylic Painting
+    </div>
+
+    <form asp-action="AddAcrylicPainting" method="post" enctype="multipart/form-data">
+        <div style="margin-bottom: 15px;">
+            <label>Painting Name</label>
+            <input asp-for="PaintingName" class="form-control" />
+            <span asp-validation-for="PaintingName" style="color: red;"></span>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label>Painting Image</label>
+            <input asp-for="PaintingImage" type="file" class="form-control" />
+            <span asp-validation-for="PaintingImage" style="color: red;"></span>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label>Painting Price</label>
+            <input asp-for="PaintingPrice" class="form-control" />
+            <span asp-validation-for="PaintingPrice" style="color: red;"></span>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label>Artist Name</label>
+            <input asp-for="ArtistName" class="form-control" />
+            <span asp-validation-for="ArtistName" style="color: red;"></span>
+        </div>
+        <button type="submit" class="user-btn" style="width: 100px;">ADD</button>
+    </form>
+</div>
+
+<style>
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+</style>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}

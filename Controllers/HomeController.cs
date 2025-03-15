@@ -144,7 +144,7 @@ public class HomeController : Controller
         TempData["Message"] = "Your application has been submitted!";
         return RedirectToAction("Join");
     }
-    
+
 
 
 

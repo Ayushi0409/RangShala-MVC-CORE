@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = ViewBag.Title;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        .artwork-detail-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px;
+        }
+
+        .artwork-image {
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .artwork-info {
+            margin-left: 40px;
+        }
+
+            .artwork-info h1 {
+                font-size: 2em;
+                color: #333;
+                margin-bottom: 10px;
+            }
+
+            .artwork-info h3 {
+                font-size: 1.5em;
+                color: #555;
+                margin-bottom: 5px;
+            }
+
+        .size-tag {
+            background-color: black;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 1.8em;
+            color: black;
+            font-weight: bold;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+            .back-button:hover {
+                background-color: #444;
+            }
+    </style>
+</head>
+<body>
+    <div class="artwork-detail-container">
+        <img class="artwork-image" src="@ViewBag.Image" alt="Artwork Image">
+        <div class="artwork-info">
+            <h1>@ViewBag.Title</h1>
+            <h3>@ViewBag.Artist</h3>
+            <p class="size-tag">Size: @ViewBag.Size</p>
+            <p class="price">INR @ViewBag.Price</p>
+            <a href="@Url.Action("Index", "Home")" class="back-button">Back to Gallery</a>
+        </div>
+    </div>
+</body>
+</html>

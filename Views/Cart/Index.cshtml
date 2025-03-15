@@ -1,0 +1,207 @@
+﻿@model List<RangShala.Models.CartItem>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - Rang Shala</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cart-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+            .cart-header h2 {
+                font-size: 1.8rem;
+                font-weight: 600;
+                margin: 0;
+            }
+
+            .cart-header .close-btn {
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: #666;
+            }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .cart-item img {
+                width: 100px;
+                height: auto;
+                border-radius: 5px;
+            }
+
+        .cart-item-details {
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+
+            .cart-item-details h3 {
+                font-size: 1.2rem;
+                font-weight: 600;
+                margin: 0 0 5px;
+            }
+
+            .cart-item-details p {
+                margin: 3px 0;
+                color: #666;
+                font-size: 0.9rem;
+            }
+
+        .cart-item-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+            .cart-item-actions button {
+                background: none;
+                border: 1px solid #ddd;
+                padding: 5px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 0.9rem;
+                color: #666;
+                transition: all 0.3s ease;
+            }
+
+                .cart-item-actions button:hover {
+                    background-color: #f0f0f0;
+                }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-top: 1px solid #ddd;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .cart-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+            .cart-actions a, .cart-actions button {
+                padding: 10px 20px;
+                border-radius: 5px;
+                text-decoration: none;
+                font-size: 1rem;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+
+        .view-more-btn {
+            background: none;
+            border: 1px solid #ddd;
+            color: #666;
+        }
+
+            .view-more-btn:hover {
+                background-color: #f0f0f0;
+            }
+
+        .checkout-btn {
+            background-color: #000;
+            color: #fff;
+            border: none;
+        }
+
+            .checkout-btn:hover {
+                background-color: #333;
+            }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <span class="close-btn">✕</span>
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p>Your cart is empty.</p>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <div class="cart-item">
+                    <img src="@item.ImagePath" alt="@item.Name" onerror="this.onerror=null; this.src='/Images/fallback.jpg'; console.log('Image failed to load: ' + this.src);">
+                    <div class="cart-item-details">
+                        <h3>@item.Name</h3>
+                        <p>@item.ArtistName</p>
+                        <p>@item.Size</p>
+                        <div class="cart-item-actions">
+                            <button onclick="editItem(@item.Id)">Edit</button>
+                            <button onclick="deleteItem(@item.Id)">Delete</button>
+                        </div>
+                    </div>
+                    <div class="cart-item-price">
+                        INR @(item.Price * item.Quantity)
+                    </div>
+                </div>
+            }
+
+            <div class="cart-total">
+                <span>Total</span>
+                <span>INR @(Model.Sum(item => item.Price * item.Quantity))</span>
+            </div>
+
+            <div class="cart-actions">
+                <a href="@Url.Action("Artwork", "Home")" class="view-more-btn">View More</a>
+                <a href="@Url.Action("Checkout", "Checkout")" class="checkout-btn">Proceed to Checkout</a>
+            </div>
+        }
+    </div>
+
+    <script>
+        function editItem(id) {
+            alert('Edit functionality for item ' + id + ' is not yet implemented.');
+        }
+
+        function deleteItem(id) {
+            if (confirm('Are you sure you want to delete this item?')) {
+                alert('Delete functionality for item ' + id + ' is not yet implemented.');
+            }
+        }
+    </script>
+</body>
+</html>

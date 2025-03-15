@@ -1,0 +1,177 @@
+﻿@model RangShala.Models.PaymentModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Rang Shala</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .payment-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 0 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .payment-method {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+            .payment-method img {
+                height: 30px;
+                margin: 0 5px;
+                vertical-align: middle; /* Ensures images align properly */
+            }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                font-size: 1rem;
+                font-weight: 500;
+                margin-bottom: 5px;
+                color: #333;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                font-size: 1rem;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+
+                .form-group input:focus {
+                    outline: none;
+                    border-color: #000;
+                }
+
+        .expiration-group {
+            display: flex;
+            gap: 10px;
+        }
+
+            .expiration-group select {
+                width: 50%;
+                padding: 10px;
+                font-size: 1rem;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+
+        .button-group {
+            margin-top: 20px;
+        }
+
+        .pay-btn, .pay-offline-btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+            .pay-btn:hover, .pay-offline-btn:hover {
+                background-color: #333;
+            }
+
+        .pay-offline-btn {
+            margin-left: 10px;
+        }
+
+        .error-message {
+            color: #ff0000;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <h2>Credit Card Details</h2>
+        <div class="payment-method">
+            <span>Payment Method</span>
+            <img src="~/images/payment-icons/mastercard.png" alt="MasterCard">
+            <img src="~/images/payment-icons/visa.png" alt="Visa">
+            <img src="~/images/payment-icons/googlepay.png" alt="Google Pay">
+            <img src="~/images/payment-icons/amex.png" alt="American Express">
+        </div>
+
+        <form asp-action="Payment" method="post">
+            <div class="form-group">
+                <label for="NameOnCard">Name on Card</label>
+                <input type="text" id="NameOnCard" name="NameOnCard" value="@Model.NameOnCard" required />
+            </div>
+            <div class="form-group">
+                <label for="CardNumber">Card Number</label>
+                <input type="text" id="CardNumber" name="CardNumber" value="@Model.CardNumber" required pattern="\d{16}" placeholder="0000 0000 0000 0000" />
+            </div>
+            <div class="form-group">
+                <label>Card Expiration</label>
+                <div class="expiration-group">
+                    <select id="ExpirationMonth" name="ExpirationMonth" required>
+                        <option value="">Month</option>
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <select id="ExpirationYear" name="ExpirationYear" required>
+                        <option value="">Year</option>
+                        @for (int i = DateTime.Now.Year; i <= DateTime.Now.Year + 10; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="SecurityCode">Card Security Code</label>
+                <input type="text" id="SecurityCode" name="SecurityCode" value="@Model.SecurityCode" required pattern="\d{3,4}" placeholder="Code" />
+            </div>
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="error-message">@TempData["Error"]</div>
+            }
+
+            <div class="button-group">
+                <button type="submit" class="pay-btn">Pay</button>
+                <a href="@Url.Action("Confirmation", "Checkout")" class="pay-offline-btn">Pay Offline</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

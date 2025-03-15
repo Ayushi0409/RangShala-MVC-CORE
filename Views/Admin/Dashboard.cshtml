@@ -1,0 +1,87 @@
+﻿@model RangShala.Models.DashboardViewModel
+
+@{
+    ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="dashboard-cards">
+    <div class="card blue">
+        <i class="fas fa-paint-brush"></i>
+        <h2>@Model.Artworks</h2>
+        <p>Artworks</p>
+    </div>
+    <div class="card green">
+        <i class="fas fa-users"></i>
+        <h2>@Model.Customers</h2>
+        <p>Customers</p>
+    </div>
+    <div class="card orange">
+        <i class="fas fa-list"></i>
+        <h2>@Model.Categories</h2>
+        <p>Categories</p>
+    </div>
+    <div class="card red">
+        <i class="fas fa-shopping-cart"></i>
+        <h2>@Model.Orders</h2>
+        <p>Orders</p>
+    </div>
+</div>
+
+<style>
+    .dashboard-cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        border-radius: 8px;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .card i {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .card h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .card p {
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .blue {
+        background: #007bff;
+    }
+
+    .green {
+        background: #28a745;
+    }
+
+    .orange {
+        background: #ff9800;
+    }
+
+    .red {
+        background: #dc3545;
+    }
+</style>

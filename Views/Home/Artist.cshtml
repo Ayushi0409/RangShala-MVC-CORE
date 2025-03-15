@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Artists";
+}
+
+<h1>Artists</h1>
+
+<!-- Filter Section -->
+<div class="filter-section">
+    <label>Filter by:</label>
+    <select id="filter">
+        <option value="all">All</option>
+        <option value="Photographer">Photographer</option>
+        <option value="Painter">Painter</option>
+    </select>
+</div>
+
+<!-- Artist List -->
+<div class="artist-list">
+    <div class="artist-card" data-role="Photographer">
+        <img src="~/Images/mahek.jpg" alt="Mahek Babariya" class="artist-image">
+        <h3>Mahek Babariya</h3>
+        <p class="role">Photographer</p>
+        <p class="description">A self-taught photographer capturing emotions through her lens.</p>
+        <button class="view-more">View More</button>
+    </div>
+
+    <div class="artist-card" data-role="Painter">
+        <img src="~/Images/aarati.jpg" alt="Aarati Kumari" class="artist-image">
+        <h3>Aarati Kumari</h3>
+        <p class="role">Painter</p>
+        <p class="description">A contemporary artist known for her expressive brushwork.</p>
+        <button class="view-more">View More</button>
+    </div>
+
+    <div class="artist-card" data-role="Photographer">
+        <img src="~/Images/mirali.jpg" alt="Mirallia Jadeja" class="artist-image">
+        <h3>Mirallia Jadeja</h3>
+        <p class="role">Photographer</p>
+        <p class="description">A visionary photographer blending art and storytelling.</p>
+        <button class="view-more">View More</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById("filter").addEventListener("change", function () {
+        var filter = this.value;
+        document.querySelectorAll(".artist-card").forEach(card => {
+            card.style.display = (filter === "all" || card.dataset.role === filter) ? "block" : "none";
+        });
+    });
+</script>

@@ -79,6 +79,16 @@
     </style>
 </head>
 <body>
+    <!-- Display Success or Error Messages -->
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">@TempData["Error"]</div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success text-center">@TempData["SuccessMessage"]</div>
+    }
+
     <div class="container-box">
         <!-- Login Form -->
         <div class="form-section">
@@ -159,4 +169,5 @@
         }
     </script>
 </body>
+
 </html>

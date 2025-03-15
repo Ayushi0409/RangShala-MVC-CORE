@@ -38,7 +38,7 @@
 
         .artwork-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
             justify-content: center;
             padding: 0 10px;
@@ -52,8 +52,8 @@
             overflow: hidden;
             text-align: center;
             transition: transform 0.3s, box-shadow 0.3s;
-            position: relative; /* For positioning the overlay */
-            width: 300px;
+            position: relative;
+            max-width: 300px;
             margin: auto;
         }
 
@@ -102,12 +102,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            opacity: 0; /* Hidden by default */
+            opacity: 0;
             transition: opacity 0.3s;
         }
 
         .artwork-card:hover .overlay {
-            opacity: 1; /* Show overlay on hover */
+            opacity: 1;
         }
 
         .overlay button {
@@ -145,118 +145,91 @@
         </div>
         <div class="artwork-container">
             <div class="artwork-card">
-                <img src="~/Images/Shreenathji.jpg" alt="Shree Nathji">
+                <img src="/Images/Shreenathji.jpg" alt="Shree Nathji">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Shree Nathji</h3>
                 <p class="artist-name">Ayushi Babariya</p>
                 <p>INR 4500</p>
             </div>
             <div class="artwork-card">
-                <img src="~/Images/gouachepainting.jpg" alt="Gouache Painting">
+                <img src="/Images/gouachepainting.jpg" alt="Gouache Painting">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Gouache Painting</h3>
                 <p class="artist-name">Ayushi Babariya</p>
                 <p>INR 1000</p>
             </div>
             <div class="artwork-card">
-                <img src="~/Images/Ganpatibappa.jpg" alt="Ganpati Bappa">
+                <img src="/Images/Ganpatibappa.jpg" alt="Ganpati Bappa">
                 <div class="overlay">
                     <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
+                    <button class="add-to-cart-btn">Add to Cart</button>
                 </div>
                 <h3>Ganpati Bappa</h3>
                 <p class="artist-name">Niyati Agravat</p>
                 <p>INR 700</p>
             </div>
-            <div class="artwork-card">
-                <img src="~/Images/NightPai.jpg" alt="Night Pai">
-                <div class="overlay">
-                    <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
-                </div>
-                <h3>Night Pai</h3>
-                <p class="artist-name">Niyati Agravat</p>
-                <p>INR 500</p>
-            </div>
-            <div class="artwork-card">
-                <img src="~/Images/HousePainting.jpg" alt="House Painting">
-                <div class="overlay">
-                    <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
-                </div>
-                <h3>House Painting</h3>
-                <p class="artist-name">Niyati Agravat</p>
-                <p>INR 700</p>
-            </div>
-            <div class="artwork-card">
-                <img src="~/Images/RainyDay.jpg" alt="Rainy Day">
-                <div class="overlay">
-                    <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
-                </div>
-                <h3>Rainy Day</h3>
-                <p class="artist-name">Ayushi Babariya</p>
-                <p>INR 1000</p>
-            </div>
-            <div class="artwork-card">
-                <img src="~/Images/HillView.jpg" alt="Hill View">
-                <div class="overlay">
-                    <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
-                </div>
-                <h3>Hill View</h3>
-                <p class="artist-name">Niyati Agravat</p>
-                <p>INR 700</p>
-            </div>
-            <div class="artwork-card">
-                <img src="~/Images/HanumanDada.jpg" alt="Hanuman Dada">
-                <div class="overlay">
-                    <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
-                </div>
-                <h3>Hanuman Dada</h3>
-                <p class="artist-name">Ayushi Babariya</p>
-                <p>INR 300</p>
-            </div>
-            <div class="artwork-card">
-                <img src="~/Images/SunrisePainting.jpg" alt="Sunrise Painting">
-                <div class="overlay">
-                    <button class="view-btn">View</button>
-                    <button>Add to Cart</button>
-                </div>
-                <h3>Sunrise Painting</h3>
-                <p class="artist-name">Niyati Agravat</p>
-                <p>INR 700</p>
-            </div>
         </div>
     </div>
-    !-- Add this script at the bottom -->
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
             $(".add-to-cart-btn").click(function () {
-                var itemName = $(this).closest(".artwork-card").find("h3").text();
-                var itemPrice = $(this).closest(".artwork-card").find("p:last").text().replace("INR ", "");
+                var button = $(this);
+                var itemName = button.closest(".artwork-card").find("h3").text();
+                var itemPrice = button.closest(".artwork-card").find("p:last").text().replace("INR ", "");
 
                 $.ajax({
-                    url: '@Url.Action("AddToCart", "Cart")',
+                    url: '/Cart/IsUserLoggedIn', // Check if user is logged in
+                    type: 'GET',
+                    success: function (isLoggedIn) {
+                        if (isLoggedIn) {
+                            // User is logged in, add to cart directly
+                            addToCart(itemName, itemPrice);
+                        } else {
+                            // User is not logged in, store item in sessionStorage and redirect to login
+                            sessionStorage.setItem("pendingCartItem", JSON.stringify({ name: itemName, price: itemPrice }));
+                            window.location.href = '/Account/Login';
+                        }
+                    },
+                    error: function () {
+                        alert("Error checking login status.");
+                    }
+                });
+            });
+
+            // Check for pending cart item after login
+            var pendingItem = sessionStorage.getItem("pendingCartItem");
+            if (pendingItem) {
+                var item = JSON.parse(pendingItem);
+                addToCart(item.name, item.price);
+                sessionStorage.removeItem("pendingCartItem"); // Clear the pending item
+            }
+
+            function addToCart(name, price) {
+                $.ajax({
+                    url: '/Cart/AddToCart',
                     type: 'POST',
                     contentType: "application/json",
-                    data: JSON.stringify({ name: itemName, price: itemPrice }),
+                    data: JSON.stringify({ name: name, price: price }),
                     success: function (response) {
-                        alert(response.message); // Show confirmation
+                        if (response.success) {
+                            alert(response.message);
+                        } else {
+                            alert("Failed to add to cart: " + response.message);
+                        }
                     },
                     error: function () {
                         alert("Failed to add to cart. Try again.");
                     }
                 });
-            });
+            }
         });
     </script>
 </body>
