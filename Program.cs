@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RangShala;
 using RangShala.Data;
 using RangShala.Models;
+using RangShala.Services; // For EmailService
 using System;
 using System.Linq;
 
@@ -23,13 +25,32 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDbContext<AdminDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AdminDbConnection")));
 
+// Add EmailService
+builder.Services.AddScoped<EmailService>(); // Register EmailService
+
 // Add Session support
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(10); // Session timeout
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+// Add Razorpay configuration
+builder.Services.Configure<RazorpaySettings>(builder.Configuration.GetSection("Razorpay"));
+// Register RazorpayClient as a scoped service
+builder.Services.AddScoped<Razorpay.Api.RazorpayClient>(sp =>
+{
+    var settings = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<RazorpaySettings>>().Value;
+    if (string.IsNullOrEmpty(settings.KeyId) || string.IsNullOrEmpty(settings.KeySecret))
+    {
+        throw new InvalidOperationException("Razorpay KeyId or KeySecret is not configured in appsettings.json.");
+    }
+    return new Razorpay.Api.RazorpayClient(settings.KeyId, settings.KeySecret);
+});
+
+// Add configuration for design-time migrations (optional, but ensures consistency)
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 var app = builder.Build();
 
@@ -45,13 +66,11 @@ app.UseStaticFiles();
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-        Path.Combine(builder.Environment.WebRootPath, "Images")),
+        Path.Combine(app.Environment.WebRootPath, "Images")),
     RequestPath = "/Images"
 });
 
 app.UseRouting();
-
-// Enable session before authorization
 app.UseSession();
 app.UseAuthorization();
 
@@ -66,21 +85,18 @@ using (var scope = app.Services.CreateScope())
         var userDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var adminDbContext = scope.ServiceProvider.GetRequiredService<AdminDbContext>();
 
-        // Apply migrations if needed (User DB)
         if (userDbContext.Database.GetPendingMigrations().Any())
         {
             userDbContext.Database.Migrate();
             logger.LogInformation("User database migrations applied successfully.");
         }
 
-        // Apply migrations if needed (Admin DB)
         if (adminDbContext.Database.GetPendingMigrations().Any())
         {
             adminDbContext.Database.Migrate();
             logger.LogInformation("Admin database migrations applied successfully.");
         }
 
-        // Ensure default admin exists
         if (!adminDbContext.Admins.Any())
         {
             adminDbContext.Admins.Add(new RangShala.Models.Admin
@@ -92,10 +108,9 @@ using (var scope = app.Services.CreateScope())
             logger.LogInformation("Default admin created successfully.");
         }
 
-        // Seed default artworks if none exist
         if (!adminDbContext.Artworks.Any())
         {
-            adminDbContext.Artworks.AddRange(new[]
+            var defaultArtworks = new[]
             {
                 new Artwork { PaintingName = "Shree Nathji", PaintingImage = "/Images/Shreenathji.jpg", PaintingPrice = 4500, ArtistName = "Ayushi Babariya", Category = "Acrylic Painting" },
                 new Artwork { PaintingName = "Gouache Painting", PaintingImage = "/Images/gouachepainting.jpg", PaintingPrice = 1000, ArtistName = "Ayushi Babariya", Category = "Acrylic Painting" },
@@ -106,8 +121,11 @@ using (var scope = app.Services.CreateScope())
                 new Artwork { PaintingName = "Hill View", PaintingImage = "/Images/HillView.jpg", PaintingPrice = 700, ArtistName = "Niyati Agravat", Category = "Acrylic Painting" },
                 new Artwork { PaintingName = "Hanuman Dada", PaintingImage = "/Images/HanumanDada.jpg", PaintingPrice = 300, ArtistName = "Ayushi Babariya", Category = "Acrylic Painting" },
                 new Artwork { PaintingName = "Sunrise Painting", PaintingImage = "/Images/SunrisePainting.jpg", PaintingPrice = 700, ArtistName = "Niyati Agravat", Category = "Acrylic Painting" }
-            });
+            };
+            adminDbContext.Artworks.AddRange(defaultArtworks);
+            userDbContext.Artworks.AddRange(defaultArtworks);
             adminDbContext.SaveChanges();
+            userDbContext.SaveChanges();
             logger.LogInformation("Default artworks seeded successfully.");
         }
     }
@@ -117,7 +135,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Set the default route to Admin Login
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

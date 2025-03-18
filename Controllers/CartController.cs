@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RangShala.Data;
 using RangShala.Helpers;
 using RangShala.Models;
@@ -62,7 +61,6 @@ namespace RangShala.Controllers
 
                 switch (itemDTO.Name)
                 {
-                    // Drawings page items
                     case "Shree Nathji":
                         newItem.ImagePath = "~/Images/shreenathjii.jpg";
                         newItem.ArtistName = "Ayushi Babariya";
@@ -128,8 +126,6 @@ namespace RangShala.Controllers
                         newItem.ArtistName = "Ayushi Babariya";
                         newItem.Size = "24in x 24in";
                         break;
-
-                    // Oil Painting page items
                     case "Ganpati Bappa ":
                         newItem.ImagePath = "~/Images/oil1.jpg";
                         newItem.ArtistName = "Ayushi Babariya";
@@ -175,8 +171,6 @@ namespace RangShala.Controllers
                         newItem.ArtistName = "Ayushi Babariya";
                         newItem.Size = "24in x 24in";
                         break;
-
-                    // Mandala Art page items
                     case "Mandala Bhat":
                         newItem.ImagePath = "~/Images/mandala1.jpg";
                         newItem.ArtistName = "Ayushi Babariya";
@@ -217,8 +211,6 @@ namespace RangShala.Controllers
                         newItem.ArtistName = "Ayushi Babariya";
                         newItem.Size = "24in x 24in";
                         break;
-
-                    // Anime page items
                     case "Giyu Tomiyoka":
                         newItem.ImagePath = "~/Images/anime1.jpg";
                         newItem.ArtistName = "Niyati Agravat";
@@ -259,8 +251,6 @@ namespace RangShala.Controllers
                         newItem.ArtistName = "Niyati Agravat";
                         newItem.Size = "24in x 24in";
                         break;
-
-                    // Default case
                     default:
                         newItem.ImagePath = "~/Images/default.jpg";
                         newItem.ArtistName = "Unknown Artist";
@@ -283,6 +273,7 @@ namespace RangShala.Controllers
         }
 
         [HttpPost]
+        [IgnoreAntiforgeryToken]
         public IActionResult Delete(int id)
         {
             var user = HttpContext.Session.GetObjectFromJson<ApplicationUser>("User");

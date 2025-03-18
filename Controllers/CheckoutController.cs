@@ -3,16 +3,20 @@ using RangShala.Data;
 using RangShala.Helpers;
 using RangShala.Models;
 using Microsoft.EntityFrameworkCore;
+using Razorpay.Api;
+using Microsoft.Extensions.Options;
 
 namespace RangShala.Controllers
 {
     public class CheckoutController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly RazorpaySettings _razorpaySettings;
 
-        public CheckoutController(ApplicationDbContext context)
+        public CheckoutController(ApplicationDbContext context, IOptions<RazorpaySettings> razorpaySettings)
         {
             _context = context;
+            _razorpaySettings = razorpaySettings.Value ?? throw new ArgumentNullException(nameof(razorpaySettings));
         }
 
         // GET: /Checkout/Checkout
@@ -36,7 +40,7 @@ namespace RangShala.Controllers
 
             var model = new CheckoutModel
             {
-                Email = user?.Email ?? string.Empty
+                Email = user.Email ?? string.Empty
             };
 
             return View(model);
@@ -101,26 +105,6 @@ namespace RangShala.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var model = new PaymentModel();
-            return View(model);
-        }
-
-        // POST: /Checkout/Payment
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Payment(PaymentModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var user = HttpContext.Session.GetObjectFromJson<ApplicationUser>("User");
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             var cartItems = _context.CartItems.Where(c => c.UserId == user.Id).ToList();
             if (!cartItems.Any())
             {
@@ -128,15 +112,82 @@ namespace RangShala.Controllers
                 return RedirectToAction("Index", "Cart");
             }
 
-            // Simulate payment processing
-            Console.WriteLine($"Simulated Payment - Name: {model.NameOnCard}, Card: {model.CardNumber}, Expiry: {model.ExpirationMonth}/{model.ExpirationYear}, CVV: {model.SecurityCode}");
+            decimal totalAmount = cartItems.Sum(item => item.Price * item.Quantity) * 100;
 
-            // Clear the cart
-            _context.CartItems.RemoveRange(cartItems);
-            _context.SaveChanges();
+            var client = new RazorpayClient(_razorpaySettings.KeyId, _razorpaySettings.KeySecret);
+            var orderOptions = new Dictionary<string, object>
+            {
+                { "amount", totalAmount },
+                { "currency", "INR" },
+                { "receipt", $"order_rcptid_{user.Id}_{DateTime.Now.Ticks}" },
+                { "payment_capture", 1 }
+            };
 
-            TempData["SuccessMessage"] = "Payment successful! Order placed.";
-            return RedirectToAction("Confirmation");
+            var order = client.Order.Create(orderOptions);
+            var model = new PaymentModel
+            {
+                OrderId = order["id"]?.ToString(),
+                Amount = totalAmount,
+                Currency = "INR",
+                KeyId = _razorpaySettings.KeyId,
+                Email = user.Email,
+                Name = $"{user.FirstName} {user.LastName}",
+                Contact = user.Mobile
+            };
+
+            return View(model);
+        }
+
+        // POST: /Checkout/VerifyPayment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult VerifyPayment(string razorpay_payment_id, string razorpay_order_id, string razorpay_signature)
+        {
+            var user = HttpContext.Session.GetObjectFromJson<ApplicationUser>("User");
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var attributes = new Dictionary<string, string>
+            {
+                { "razorpay_payment_id", razorpay_payment_id },
+                { "razorpay_order_id", razorpay_order_id },
+                { "razorpay_signature", razorpay_signature }
+            };
+
+            try
+            {
+                Razorpay.Api.Utils.verifyPaymentSignature(attributes); // Corrected method call
+
+                var payment = new RangShala.Models.Payment // Fully qualify to avoid ambiguity
+                {
+                    UserId = user.Id,
+                    RazorpayOrderId = razorpay_order_id,
+                    RazorpayPaymentId = razorpay_payment_id,
+                    RazorpaySignature = razorpay_signature,
+                    Amount = _context.CartItems.Where(c => c.UserId == user.Id).Sum(c => c.Price * c.Quantity) * 100,
+                    Currency = "INR",
+                    Email = user.Email,
+                    Name = $"{user.FirstName} {user.LastName}",
+                    Contact = user.Mobile,
+                    PaymentDate = DateTime.Now,
+                    IsSuccessful = true
+                };
+                _context.Payments.Add(payment);
+
+                var cartItems = _context.CartItems.Where(c => c.UserId == user.Id).ToList();
+                _context.CartItems.RemoveRange(cartItems);
+                _context.SaveChanges();
+
+                TempData["SuccessMessage"] = "Payment successful! Order placed.";
+                return RedirectToAction("Confirmation");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Payment verification failed: " + ex.Message;
+                return RedirectToAction("Payment");
+            }
         }
 
         // GET: /Checkout/Confirmation

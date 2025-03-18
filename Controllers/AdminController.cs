@@ -3,21 +3,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RangShala.Data;
 using RangShala.Models;
-using System.Linq;
-using Microsoft.AspNetCore.Hosting;
+using System;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RangShala.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly AdminDbContext _context;
+        private readonly AdminDbContext _adminContext;
+        private readonly ApplicationDbContext _userContext;
         private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public AdminController(AdminDbContext context, IWebHostEnvironment hostingEnvironment)
+        public AdminController(AdminDbContext adminContext, ApplicationDbContext userContext, IWebHostEnvironment hostingEnvironment)
         {
-            _context = context;
-            _hostingEnvironment = hostingEnvironment;
+            _adminContext = adminContext ?? throw new ArgumentNullException(nameof(adminContext));
+            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
+            _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
         }
 
         public IActionResult Index()
@@ -29,10 +32,11 @@ namespace RangShala.Controllers
 
             var model = new DashboardViewModel
             {
-                Artworks = _context.Artworks.Count(),
-                Customers = _context.Customers.Count(),
-                Categories = _context.Artworks.Select(a => a.Category).Distinct().Count(),
-                Orders = _context.Orders.Count()
+                Artworks = _adminContext.Artworks.Count(),
+                Customers = _adminContext.Customers.Count(),
+                Categories = _adminContext.Artworks.Select(a => a.Category).Distinct().Count(),
+                Orders = _adminContext.Orders.Count(),
+                ArtworkList = _adminContext.Artworks.ToList() // For the popup
             };
 
             return View("Dashboard", model);
@@ -50,7 +54,7 @@ namespace RangShala.Controllers
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
-            var admin = _context.Admins.FirstOrDefault(a => a.Email == email && a.Password == password);
+            var admin = _adminContext.Admins.FirstOrDefault(a => a.Email == email && a.Password == password);
 
             if (admin != null)
             {
@@ -71,10 +75,11 @@ namespace RangShala.Controllers
 
             var model = new DashboardViewModel
             {
-                Artworks = _context.Artworks.Count(),
-                Customers = _context.Customers.Count(),
-                Categories = _context.Artworks.Select(a => a.Category).Distinct().Count(),
-                Orders = _context.Orders.Count()
+                Artworks = _adminContext.Artworks.Count(),
+                Customers = _adminContext.Customers.Count(),
+                Categories = _adminContext.Artworks.Select(a => a.Category).Distinct().Count(),
+                Orders = _adminContext.Orders.Count(),
+                ArtworkList = _adminContext.Artworks.ToList()
             };
 
             return View(model);
@@ -96,7 +101,7 @@ namespace RangShala.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddAcrylicPainting(Artwork artwork, IFormFile paintingImage)
+        public async Task<IActionResult> AddAcrylicPainting(Artwork artwork, IFormFile paintingImage)
         {
             if (HttpContext.Session.GetString("AdminEmail") == null)
             {
@@ -118,7 +123,7 @@ namespace RangShala.Controllers
                     {
                         using (var fileStream = new FileStream(filePath, FileMode.Create))
                         {
-                            paintingImage.CopyTo(fileStream);
+                            await paintingImage.CopyToAsync(fileStream);
                         }
                         artwork.PaintingImage = "/Images/" + uniqueFileName;
                     }
@@ -129,9 +134,13 @@ namespace RangShala.Controllers
                     }
                 }
                 artwork.Category = "Acrylic Painting";
-                _context.Artworks.Add(artwork);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
+                _adminContext.Artworks.Add(artwork);
+                _userContext.Artworks.Add(artwork); // Add to user DB
+                await _adminContext.SaveChangesAsync();
+                await _userContext.SaveChangesAsync();
+                TempData["Message"] = "Artwork added successfully!";
+                // Redirect to the user-facing AcrylicPaintings page instead of Index
+                return RedirectToAction("AcrylicPaintings", "Home");
             }
             return View(artwork);
         }
@@ -146,7 +155,7 @@ namespace RangShala.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddOilPainting(Artwork artwork, IFormFile paintingImage)
+        public async Task<IActionResult> AddOilPainting(Artwork artwork, IFormFile paintingImage)
         {
             if (HttpContext.Session.GetString("AdminEmail") == null)
             {
@@ -168,7 +177,7 @@ namespace RangShala.Controllers
                     {
                         using (var fileStream = new FileStream(filePath, FileMode.Create))
                         {
-                            paintingImage.CopyTo(fileStream);
+                            await paintingImage.CopyToAsync(fileStream);
                         }
                         artwork.PaintingImage = "/Images/" + uniqueFileName;
                     }
@@ -179,8 +188,10 @@ namespace RangShala.Controllers
                     }
                 }
                 artwork.Category = "Oil Painting";
-                _context.Artworks.Add(artwork);
-                _context.SaveChanges();
+                _adminContext.Artworks.Add(artwork);
+                _userContext.Artworks.Add(artwork);
+                await _adminContext.SaveChangesAsync();
+                await _userContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View("AddAcrylicPainting", artwork);
@@ -196,7 +207,7 @@ namespace RangShala.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMandalaArt(Artwork artwork, IFormFile paintingImage)
+        public async Task<IActionResult> AddMandalaArt(Artwork artwork, IFormFile paintingImage)
         {
             if (HttpContext.Session.GetString("AdminEmail") == null)
             {
@@ -218,7 +229,7 @@ namespace RangShala.Controllers
                     {
                         using (var fileStream = new FileStream(filePath, FileMode.Create))
                         {
-                            paintingImage.CopyTo(fileStream);
+                            await paintingImage.CopyToAsync(fileStream);
                         }
                         artwork.PaintingImage = "/Images/" + uniqueFileName;
                     }
@@ -229,8 +240,10 @@ namespace RangShala.Controllers
                     }
                 }
                 artwork.Category = "Mandala Art";
-                _context.Artworks.Add(artwork);
-                _context.SaveChanges();
+                _adminContext.Artworks.Add(artwork);
+                _userContext.Artworks.Add(artwork);
+                await _adminContext.SaveChangesAsync();
+                await _userContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View("AddAcrylicPainting", artwork);
@@ -246,7 +259,7 @@ namespace RangShala.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddAnimeDrawings(Artwork artwork, IFormFile paintingImage)
+        public async Task<IActionResult> AddAnimeDrawings(Artwork artwork, IFormFile paintingImage)
         {
             if (HttpContext.Session.GetString("AdminEmail") == null)
             {
@@ -268,7 +281,7 @@ namespace RangShala.Controllers
                     {
                         using (var fileStream = new FileStream(filePath, FileMode.Create))
                         {
-                            paintingImage.CopyTo(fileStream);
+                            await paintingImage.CopyToAsync(fileStream);
                         }
                         artwork.PaintingImage = "/Images/" + uniqueFileName;
                     }
@@ -279,8 +292,10 @@ namespace RangShala.Controllers
                     }
                 }
                 artwork.Category = "Anime Drawings";
-                _context.Artworks.Add(artwork);
-                _context.SaveChanges();
+                _adminContext.Artworks.Add(artwork);
+                _userContext.Artworks.Add(artwork);
+                await _adminContext.SaveChangesAsync();
+                await _userContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View("AddAcrylicPainting", artwork);
@@ -296,7 +311,7 @@ namespace RangShala.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddDrawing(Artwork artwork, IFormFile paintingImage)
+        public async Task<IActionResult> AddDrawing(Artwork artwork, IFormFile paintingImage)
         {
             if (HttpContext.Session.GetString("AdminEmail") == null)
             {
@@ -318,7 +333,7 @@ namespace RangShala.Controllers
                     {
                         using (var fileStream = new FileStream(filePath, FileMode.Create))
                         {
-                            paintingImage.CopyTo(fileStream);
+                            await paintingImage.CopyToAsync(fileStream);
                         }
                         artwork.PaintingImage = "/Images/" + uniqueFileName;
                     }
@@ -329,11 +344,91 @@ namespace RangShala.Controllers
                     }
                 }
                 artwork.Category = "Drawing";
-                _context.Artworks.Add(artwork);
-                _context.SaveChanges();
+                _adminContext.Artworks.Add(artwork);
+                _userContext.Artworks.Add(artwork);
+                await _adminContext.SaveChangesAsync();
+                await _userContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View("AddAcrylicPainting", artwork);
+        }
+
+        public IActionResult ViewAcrylicPaintings()
+        {
+            if (HttpContext.Session.GetString("AdminEmail") == null)
+            {
+                return RedirectToAction("Login");
+            }
+            var acrylicPaintings = _adminContext.Artworks.Where(a => a.Category == "Acrylic Painting").ToList();
+            return View(acrylicPaintings);
+        }
+
+        public IActionResult ViewOilPaintings()
+        {
+            if (HttpContext.Session.GetString("AdminEmail") == null)
+            {
+                return RedirectToAction("Login");
+            }
+            var oilPaintings = _adminContext.Artworks.Where(a => a.Category == "Oil Painting").ToList();
+            return View(oilPaintings);
+        }
+
+        public IActionResult ViewMandalaArt()
+        {
+            if (HttpContext.Session.GetString("AdminEmail") == null)
+            {
+                return RedirectToAction("Login");
+            }
+            var mandalaArt = _adminContext.Artworks.Where(a => a.Category == "Mandala Art").ToList();
+            return View(mandalaArt);
+        }
+
+        public IActionResult ViewAnimeDrawings()
+        {
+            if (HttpContext.Session.GetString("AdminEmail") == null)
+            {
+                return RedirectToAction("Login");
+            }
+            var animeDrawings = _adminContext.Artworks.Where(a => a.Category == "Anime Drawings").ToList();
+            return View(animeDrawings);
+        }
+
+        public IActionResult ViewDrawings()
+        {
+            if (HttpContext.Session.GetString("AdminEmail") == null)
+            {
+                return RedirectToAction("Login");
+            }
+            var drawings = _adminContext.Artworks.Where(a => a.Category == "Drawing").ToList();
+            return View(drawings);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteArtwork(int id)
+        {
+            if (HttpContext.Session.GetString("AdminEmail") == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var artwork = _adminContext.Artworks.FirstOrDefault(a => a.Id == id);
+            if (artwork != null)
+            {
+                _adminContext.Artworks.Remove(artwork);
+                _userContext.Artworks.Remove(artwork);
+                _adminContext.SaveChanges();
+                _userContext.SaveChanges();
+            }
+
+            return artwork?.Category switch
+            {
+                "Acrylic Painting" => RedirectToAction("ViewAcrylicPaintings"),
+                "Oil Painting" => RedirectToAction("ViewOilPaintings"),
+                "Mandala Art" => RedirectToAction("ViewMandalaArt"),
+                "Anime Drawings" => RedirectToAction("ViewAnimeDrawings"),
+                "Drawing" => RedirectToAction("ViewDrawings"),
+                _ => RedirectToAction("Index")
+            };
         }
     }
 }

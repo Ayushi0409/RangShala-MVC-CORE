@@ -1,0 +1,79 @@
+﻿@model List<RangShala.Models.Artwork>
+
+@{
+    ViewBag.Title = "View Artworks";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@(ViewContext.RouteData.Values["action"].ToString().Replace("View", "").Replace("Paintings", " Paintings").Replace("Art", " Art").Replace("Drawings", " Drawings"))</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No artworks found in this category.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Price</th>
+                <th>Artist</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var artwork in Model)
+            {
+                <tr>
+                    <td>@artwork.PaintingName</td>
+                    <td><img src="@artwork.PaintingImage" alt="@artwork.PaintingName" style="width: 50px; height: auto;" /></td>
+                    <td>INR @artwork.PaintingPrice</td>
+                    <td>@artwork.ArtistName</td>
+                    <td>
+                        <form asp-action="DeleteArtwork" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@artwork.Id" />
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete this artwork?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<style>
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    button {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #c82333;
+        }
+</style>

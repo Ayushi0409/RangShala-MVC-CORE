@@ -6,5 +6,6 @@
         public int Customers { get; set; }
         public int Categories { get; set; }
         public int Orders { get; set; }
+        public List<Artwork> ArtworkList { get; set; } // For the popup
     }
 }

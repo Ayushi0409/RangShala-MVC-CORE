@@ -1,6 +1,83 @@
-﻿namespace RangShala.Views.Home
-{
-    public class Search
-    {
-    }
+﻿@{
+    ViewBag.Title = "Search Results";
 }
+
+<div class="search-results-container">
+    <h2>Search Results for "@ViewBag.Query"</h2>
+
+    @if (ViewBag.SearchResults != null && ViewBag.SearchResults.Count > 0)
+    {
+        <ul class="search-results-list">
+            @foreach (var item in ViewBag.SearchResults)
+            {
+                <li>
+                    @item
+                    @switch (item.ToLower())
+                    {
+                        case "acrylic painting":
+                            <a href="@Url.Action("AcrylicPaintings", "Home")">View</a>
+                            break;
+                        case "oil painting":
+                            <a href="@Url.Action("OilPainting", "Home")">View</a>
+                            break;
+                        case "drawings":
+                            <a href="@Url.Action("Drawings", "Home")">View</a>
+                            break;
+                        case "anime":
+                            <a href="@Url.Action("Anime", "Home")">View</a>
+                            break;
+                        case "mandala art":
+                            <a href="@Url.Action("MandalaArt", "Home")">View</a>
+                            break;
+                        case "artist":
+                            <a href="@Url.Action("Artist", "Home")">View</a>
+                            break;
+                        case "niyati agravat":
+                            <a href="@Url.Action("Niyati", "Home")">View</a>
+                            break;
+                        case "ayushi babariya":
+                            <a href="@Url.Action("Ayushi", "Home")">View</a>
+                            break;
+                    }
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No results found for "@ViewBag.Query".</p>
+    }
+
+    <a href="@Url.Action("Index", "Home")" class="back-link">Back to Home</a>
+</div>
+
+<style>
+    .search-results-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    .search-results-list {
+        list-style: none;
+        padding: 0;
+    }
+
+        .search-results-list li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+            .search-results-list li a {
+                margin-left: 10px;
+                color: #007bff;
+                text-decoration: none;
+            }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 20px;
+        color: #007bff;
+        text-decoration: none;
+    }
+</style>
