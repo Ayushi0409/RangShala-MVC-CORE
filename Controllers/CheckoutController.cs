@@ -146,21 +146,25 @@ namespace RangShala.Controllers
             var user = HttpContext.Session.GetObjectFromJson<ApplicationUser>("User");
             if (user == null)
             {
+                Console.WriteLine("User not found in session");
                 return RedirectToAction("Login", "Account");
             }
+            Console.WriteLine($"User ID: {user.Id}");
 
             var attributes = new Dictionary<string, string>
-            {
-                { "razorpay_payment_id", razorpay_payment_id },
-                { "razorpay_order_id", razorpay_order_id },
-                { "razorpay_signature", razorpay_signature }
-            };
+    {
+        { "razorpay_payment_id", razorpay_payment_id },
+        { "razorpay_order_id", razorpay_order_id },
+        { "razorpay_signature", razorpay_signature }
+    };
 
             try
             {
-                Razorpay.Api.Utils.verifyPaymentSignature(attributes); // Corrected method call
+                Console.WriteLine("Verifying payment signature...");
+                Razorpay.Api.Utils.verifyPaymentSignature(attributes);
+                Console.WriteLine("Payment signature verified successfully");
 
-                var payment = new RangShala.Models.Payment // Fully qualify to avoid ambiguity
+                var payment = new RangShala.Models.Payment
                 {
                     UserId = user.Id,
                     RazorpayOrderId = razorpay_order_id,
@@ -175,21 +179,33 @@ namespace RangShala.Controllers
                     IsSuccessful = true
                 };
                 _context.Payments.Add(payment);
+                Console.WriteLine($"Payment saved: PaymentId={payment.RazorpayPaymentId}");
 
                 var cartItems = _context.CartItems.Where(c => c.UserId == user.Id).ToList();
-                _context.CartItems.RemoveRange(cartItems);
-                _context.SaveChanges();
+                Console.WriteLine($"Found {cartItems.Count} cart items for user {user.Id}");
+
+                try
+                {
+                    _context.CartItems.RemoveRange(cartItems);
+                    _context.SaveChanges();
+                    Console.WriteLine("Cart cleared and changes saved");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to clear cart: {ex.Message}");
+                    throw;
+                }
 
                 TempData["SuccessMessage"] = "Payment successful! Order placed.";
                 return RedirectToAction("Confirmation");
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Payment verification failed: {ex.Message}");
                 TempData["Error"] = "Payment verification failed: " + ex.Message;
                 return RedirectToAction("Payment");
             }
         }
-
         // GET: /Checkout/Confirmation
         public IActionResult Confirmation(bool offline = false)
         {

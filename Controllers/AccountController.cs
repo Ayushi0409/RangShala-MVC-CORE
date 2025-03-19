@@ -15,15 +15,17 @@ namespace RangShala.Controllers
     public class AccountController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly AdminDbContext _adminContext; // Added for syncing with admin data
         private readonly PasswordHasher<ApplicationUser> _passwordHasher = new();
         private readonly ILogger<AccountController> _logger;
         private readonly EmailService _emailService; // Added for email functionality
 
-        public AccountController(ApplicationDbContext context, ILogger<AccountController> logger, EmailService emailService)
+        public AccountController(ApplicationDbContext context, AdminDbContext adminContext, ILogger<AccountController> logger, EmailService emailService)
         {
-            _context = context;
-            _logger = logger;
-            _emailService = emailService;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _adminContext = adminContext ?? throw new ArgumentNullException(nameof(adminContext));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         }
 
         // GET: Login page
@@ -76,6 +78,18 @@ namespace RangShala.Controllers
 
                 _context.ApplicationUsers.Add(user);
                 _context.SaveChanges();
+
+                // Sync with AdminDbContext Customers table
+                var customer = new Customer
+                {
+                    CustomerName = $"{title} {firstName} {lastName}",
+                    Email = email,
+                    Country = "India", // Default value; adjust if dynamic
+                    City = "Dhoraji", // Default value; adjust if dynamic
+                    Mobile = mobile
+                };
+                _adminContext.Customers.Add(customer);
+                _adminContext.SaveChanges();
 
                 _logger.LogInformation($"User {email} registered successfully.");
                 TempData["SuccessMessage"] = "Registration successful! Please verify your email.";

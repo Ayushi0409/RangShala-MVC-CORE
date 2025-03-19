@@ -430,5 +430,37 @@ namespace RangShala.Controllers
                 _ => RedirectToAction("Index")
             };
         }
+        public IActionResult ViewCustomer()
+        {
+            if (HttpContext.Session.GetString("AdminEmail") == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var customers = _adminContext.Customers.ToList();
+            return View(customers);
+        }
+        [HttpPost]
+        public IActionResult DeleteCustomer(int id)
+        {
+            if (HttpContext.Session.GetString("AdminEmail") == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var customer = _adminContext.Customers.FirstOrDefault(c => c.Id == id);
+            if (customer != null)
+            {
+                _adminContext.Customers.Remove(customer);
+                _adminContext.SaveChanges();
+                TempData["SuccessMessage"] = "Customer deleted successfully.";
+            }
+            else
+            {
+                TempData["Error"] = "Customer not found.";
+            }
+
+            return RedirectToAction("ViewCustomer");
+        }
     }
 }

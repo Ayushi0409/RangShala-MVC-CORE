@@ -1,12 +1,11 @@
-﻿@using System.Linq
-@model List<RangShala.Models.Artwork>
+﻿@model List<RangShala.Models.Artwork>
 
 @{
-    ViewBag.Title = "View Acrylic Paintings";
+    ViewBag.Title = "View Artworks";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Acrylic Paintings</h2>
+<h2>@(ViewContext.RouteData.Values["action"].ToString().Replace("View", "").Replace("Paintings", " Paintings").Replace("Art", " Art").Replace("Drawings", " Drawings"))</h2>
 
 @if (Model == null || !Model.Any())
 {
@@ -29,10 +28,7 @@ else
             {
                 <tr>
                     <td>@artwork.PaintingName</td>
-                    <td>
-                        <img src="@Url.Content(artwork.PaintingImage)" alt="@artwork.PaintingName" style="width: 50px; height: auto;"
-                             onerror="this.onerror=null; this.src='/Images/placeholder.jpg';" />
-                    </td>
+                    <td><img src="@artwork.PaintingImage" alt="@artwork.PaintingName" style="width: 50px; height: auto;" /></td>
                     <td>INR @artwork.PaintingPrice</td>
                     <td>@artwork.ArtistName</td>
                     <td>

@@ -1,0 +1,70 @@
+﻿@model List<RangShala.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "View Users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; // Use the same layout as your dashboard if applicable
+}
+
+<h2>View Users</h2>
+
+<table border="1" cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+    <thead>
+        <tr style="background-color: #007bff; color: white;">
+            <th>Customer No:</th>
+            <th>Customer Name:</th>
+            <th>Email:</th>
+            <th>Country:</th>
+            <th>City:</th>
+            <th>Customer No:</th>
+            <th>Delete Customer</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@($"{user.Title} {user.FirstName} {user.LastName}")</td>
+                <td>@user.Email</td>
+                <td>India</td> <!-- Assuming all users are from India; adjust if needed -->
+                <td>Dhoraji</td> <!-- Assuming a default city; adjust if needed -->
+                <td>@user.Mobile</td>
+                <td>
+                    <a href="@Url.Action("DeleteUser", "Account", new { id = user.Id })" onclick="return confirm('Are you sure you want to delete this user?');">
+                        <span style="cursor: pointer; color: red;">🗑️</span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
