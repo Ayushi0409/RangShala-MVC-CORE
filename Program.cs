@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using RangShala;
 using RangShala.Data;
 using RangShala.Models;
-using RangShala.Services; // For EmailService
+using RangShala.Services; // For EmailService and WeatherService
 using System;
 using System.Linq;
 
@@ -16,6 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient(); // Added for WeatherService or other API calls
+builder.Services.AddScoped<WeatherService>(); // Register WeatherService
 
 // Add User Database Context (RangShalaDB)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

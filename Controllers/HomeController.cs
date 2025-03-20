@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RangShala.Data;
 using RangShala.Models;
-using RangShala.Services; // Add this for EmailService
+using RangShala.Services; // For EmailService and WeatherService
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,13 +14,19 @@ public class HomeController : Controller
 {
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly ApplicationDbContext _dbContext;
-    private readonly EmailService _emailService; // Add EmailService
+    private readonly EmailService _emailService;
+    private readonly WeatherService _weatherService; // Added WeatherService
 
-    public HomeController(IWebHostEnvironment webHostEnvironment, ApplicationDbContext dbContext, EmailService emailService)
+    public HomeController(
+        IWebHostEnvironment webHostEnvironment,
+        ApplicationDbContext dbContext,
+        EmailService emailService,
+        WeatherService weatherService) // Added WeatherService to constructor
     {
         _webHostEnvironment = webHostEnvironment;
         _dbContext = dbContext;
         _emailService = emailService;
+        _weatherService = weatherService;
     }
 
     public IActionResult Search(string query)
@@ -48,8 +54,10 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        var weatherData = await _weatherService.GetWeatherAsync("Delhi"); // Fetch weather for Delhi
+        ViewBag.Weather = weatherData; // Pass raw JSON to view (parse it if needed)
         return View();
     }
 
@@ -136,15 +144,15 @@ public class HomeController : Controller
 
     [HttpPost]
     public async Task<IActionResult> JoinUsSubmit(
-    IFormFile artwork,
-    string name,
-    DateTime dob,
-    string address,
-    string address2,
-    string email,
-    string phone,
-    string occupation,
-    bool terms)
+        IFormFile artwork,
+        string name,
+        DateTime dob,
+        string address,
+        string address2,
+        string email,
+        string phone,
+        string occupation,
+        bool terms)
     {
         Console.WriteLine($"Terms value received: {terms}");
 
