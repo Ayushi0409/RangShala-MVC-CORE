@@ -2,20 +2,20 @@
 
 @{
     ViewData["Title"] = "Add Acrylic Painting";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml"; // Assuming this matches your Admin Dashboard layout
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="add-artwork-container">
     <h2>Add New Acrylic Painting</h2>
 
-    @if (!string.IsNullOrEmpty(TempData["Message"] as string))
+    @if (TempData["Message"] != null)
     {
         <div class="alert alert-success">
             @TempData["Message"]
         </div>
     }
 
-    @if (!string.IsNullOrEmpty(TempData["Error"] as string))
+    @if (TempData["Error"] != null)
     {
         <div class="alert alert-danger">
             @TempData["Error"]
@@ -28,24 +28,22 @@
             <input asp-for="PaintingName" class="form-control" required placeholder="Enter painting name" />
             <span asp-validation-for="PaintingName" class="text-danger"></span>
         </div>
-
         <div class="form-group">
             <label asp-for="PaintingPrice">Price (INR)</label>
             <input asp-for="PaintingPrice" class="form-control" type="number" step="0.01" required placeholder="Enter price in INR" />
             <span asp-validation-for="PaintingPrice" class="text-danger"></span>
         </div>
-
         <div class="form-group">
             <label asp-for="ArtistName">Artist Name</label>
             <input asp-for="ArtistName" class="form-control" required placeholder="Enter artist name" />
             <span asp-validation-for="ArtistName" class="text-danger"></span>
         </div>
-
         <div class="form-group">
-            <label asp-for="PaintingImage">Upload Image</label>
-            <input type="file" name="paintingImage" accept="image/*" required />            <small class="form-text text-muted">Accepted formats: JPG, PNG, JPEG</small>
+            <label>Upload Image</label>
+            <input type="file" name="paintingImage" id="paintingImage" accept="image/*" required />
+            <small class="form-text text-muted">Accepted formats: JPG, PNG, JPEG</small>
+            <span class="text-danger" id="image-error"></span>
         </div>
-
         <button type="submit" class="btn btn-primary">Add Artwork</button>
         <a href="@Url.Action("Index", "Admin")" class="btn btn-secondary">Cancel</a>
     </form>
@@ -84,14 +82,14 @@
             color: #555;
         }
 
-    .form-control, .form-control-file {
+    .form-control, input[type="file"] {
         padding: 10px;
         border-radius: 5px;
         border: 1px solid #ddd;
         font-size: 14px;
     }
 
-        .form-control:focus {
+        .form-control:focus, input[type="file"]:focus {
             border-color: #007bff;
             outline: none;
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
@@ -145,4 +143,16 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.querySelector('form').addEventListener('submit', function () {
+            const fileInput = document.getElementById('paintingImage');
+            const errorSpan = document.getElementById('image-error');
+            if (!fileInput.files.length) {
+                errorSpan.textContent = "Please upload an image.";
+                event.preventDefault();
+                return;
+            }
+            sessionStorage.setItem('newArtworkAdded', 'true');
+        });
+    </script>
 }

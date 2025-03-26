@@ -1,0 +1,19 @@
+﻿@model List<RangShala.Models.Artwork>
+
+@if (Model != null && Model.Any())
+{
+    @foreach (var artwork in Model)
+    {
+        <div class="artwork-card dynamic-artwork">
+            <img src="@Url.Content(artwork.PaintingImage)" alt="@artwork.PaintingName"
+                 onerror="this.onerror=null; this.src='/Images/placeholder.jpg';">
+            <div class="overlay">
+                <button class="view-btn">View</button>
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </div>
+            <h3>@artwork.PaintingName</h3>
+            <p class="artist-name">@artwork.ArtistName</p>
+            <p>INR @artwork.PaintingPrice</p>
+        </div>
+    }
+}

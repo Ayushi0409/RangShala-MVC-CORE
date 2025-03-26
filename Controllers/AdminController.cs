@@ -36,7 +36,7 @@ namespace RangShala.Controllers
                 Customers = _adminContext.Customers.Count(),
                 Categories = _adminContext.Artworks.Select(a => a.Category).Distinct().Count(),
                 Orders = _adminContext.Orders.Count(),
-                ArtworkList = _adminContext.Artworks.ToList() // For the popup
+                ArtworkList = _adminContext.Artworks.ToList()
             };
 
             return View("Dashboard", model);
@@ -101,47 +101,54 @@ namespace RangShala.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAcrylicPainting(Artwork artwork, IFormFile paintingImage)
+        public async Task<IActionResult> AddAcrylicPainting(Artwork artwork, IFormFile? paintingImage)
         {
             if (HttpContext.Session.GetString("AdminEmail") == null)
             {
                 return RedirectToAction("Login");
             }
 
+            if (paintingImage == null || paintingImage.Length == 0)
+            {
+                ModelState.AddModelError("paintingImage", "Please upload an image.");
+            }
+
             if (ModelState.IsValid)
             {
-                if (paintingImage != null && paintingImage.Length > 0)
+                try
                 {
                     string imagesFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Images");
                     if (!Directory.Exists(imagesFolder))
                     {
                         Directory.CreateDirectory(imagesFolder);
                     }
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(paintingImage.FileName);
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + paintingImage.FileName;
                     string filePath = Path.Combine(imagesFolder, uniqueFileName);
-                    try
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await paintingImage.CopyToAsync(fileStream);
-                        }
-                        artwork.PaintingImage = "/Images/" + uniqueFileName;
+                        await paintingImage.CopyToAsync(fileStream);
                     }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("", "Error uploading image: " + ex.Message);
-                        return View(artwork);
-                    }
+                    artwork.PaintingImage = "/Images/" + uniqueFileName;
+
+                    artwork.Category = "Acrylic Painting";
+                    _adminContext.Artworks.Add(artwork);
+                    _userContext.Artworks.Add(artwork);
+                    await _adminContext.SaveChangesAsync();
+                    await _userContext.SaveChangesAsync();
+
+                    TempData["Message"] = "Artwork added successfully!";
+                    return RedirectToAction("AcrylicPaintings", "Home");
                 }
-                artwork.Category = "Acrylic Painting";
-                _adminContext.Artworks.Add(artwork);
-                _userContext.Artworks.Add(artwork); // Add to user DB
-                await _adminContext.SaveChangesAsync();
-                await _userContext.SaveChangesAsync();
-                TempData["Message"] = "Artwork added successfully!";
-                // Redirect to the user-facing AcrylicPaintings page instead of Index
-                return RedirectToAction("AcrylicPaintings", "Home");
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", $"Error uploading image: {ex.Message}");
+                    return View(artwork);
+                }
             }
+
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+            TempData["Error"] = "Failed to add artwork. Errors: " + string.Join(", ", errors);
             return View(artwork);
         }
 
@@ -171,7 +178,7 @@ namespace RangShala.Controllers
                     {
                         Directory.CreateDirectory(imagesFolder);
                     }
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(paintingImage.FileName);
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + paintingImage.FileName;
                     string filePath = Path.Combine(imagesFolder, uniqueFileName);
                     try
                     {
@@ -223,7 +230,7 @@ namespace RangShala.Controllers
                     {
                         Directory.CreateDirectory(imagesFolder);
                     }
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(paintingImage.FileName);
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + paintingImage.FileName;
                     string filePath = Path.Combine(imagesFolder, uniqueFileName);
                     try
                     {
@@ -275,7 +282,7 @@ namespace RangShala.Controllers
                     {
                         Directory.CreateDirectory(imagesFolder);
                     }
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(paintingImage.FileName);
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + paintingImage.FileName;
                     string filePath = Path.Combine(imagesFolder, uniqueFileName);
                     try
                     {
@@ -327,7 +334,7 @@ namespace RangShala.Controllers
                     {
                         Directory.CreateDirectory(imagesFolder);
                     }
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(paintingImage.FileName);
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + paintingImage.FileName;
                     string filePath = Path.Combine(imagesFolder, uniqueFileName);
                     try
                     {
@@ -430,6 +437,7 @@ namespace RangShala.Controllers
                 _ => RedirectToAction("Index")
             };
         }
+
         public IActionResult ViewCustomer()
         {
             if (HttpContext.Session.GetString("AdminEmail") == null)
@@ -440,6 +448,7 @@ namespace RangShala.Controllers
             var customers = _adminContext.Customers.ToList();
             return View(customers);
         }
+
         [HttpPost]
         public IActionResult DeleteCustomer(int id)
         {

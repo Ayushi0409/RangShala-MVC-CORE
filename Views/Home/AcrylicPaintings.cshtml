@@ -91,7 +91,6 @@
                 color: #555;
             }
 
-        /* Hover overlay for buttons */
         .overlay {
             position: absolute;
             top: 0;
@@ -143,7 +142,8 @@
             <div class="line"></div>
             <h2>Acrylic Paintings</h2>
         </div>
-        <div class="artwork-container">
+        <div class="artwork-container" id="artworkContainer">
+            <!-- Static Artwork Cards -->
             <div class="artwork-card">
                 <img src="/Images/Shreenathji.jpg" alt="Shree Nathji">
                 <div class="overlay">
@@ -215,42 +215,69 @@
                 <p>INR 700</p>
             </div>
 
+            <!-- Dynamic Artwork Cards from Database -->
+            @model List<RangShala.Models.Artwork>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var artwork in Model)
+                {
+                    <div class="artwork-card">
+                        <img src="@Url.Content(artwork.PaintingImage)" alt="@artwork.PaintingName"
+                             onerror="this.onerror=null; this.src='/Images/placeholder.jpg';">
+                        <div class="overlay">
+                            <button class="view-btn">View</button>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                        <h3>@artwork.PaintingName</h3>
+                        <p class="artist-name">@artwork.ArtistName</p>
+                        <p>INR @artwork.PaintingPrice</p>
+                    </div>
+                }
+            }
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-            $(".add-to-cart-btn").click(function () {
-                var button = $(this);
-                var itemName = button.closest(".artwork-card").find("h3").text();
-                var itemPrice = button.closest(".artwork-card").find("p:last").text().replace("INR ", "");
-
+            function refreshArtworks() {
                 $.ajax({
-                    url: '/Cart/IsUserLoggedIn', // Check if user is logged in
+                    url: '/Home/GetAcrylicPaintings',
                     type: 'GET',
-                    success: function (isLoggedIn) {
-                        if (isLoggedIn) {
-                            // User is logged in, add to cart directly
-                            addToCart(itemName, itemPrice);
-                        } else {
-                            // User is not logged in, store item in sessionStorage and redirect to login
-                            sessionStorage.setItem("pendingCartItem", JSON.stringify({ name: itemName, price: itemPrice }));
-                            window.location.href = '/Account/Login';
-                        }
+                    success: function (data) {
+                        // Append dynamic artworks after static ones
+                        $("#artworkContainer").find('.dynamic-artwork').remove(); // Remove previous dynamic cards
+                        $("#artworkContainer").append('<div class="dynamic-artwork">' + data + '</div>');
+                        bindCartEvents(); // Re-bind events for new dynamic cards
                     },
                     error: function () {
-                        alert("Error checking login status.");
+                        console.log("Failed to refresh artworks.");
                     }
                 });
-            });
+            }
 
-            // Check for pending cart item after login
-            var pendingItem = sessionStorage.getItem("pendingCartItem");
-            if (pendingItem) {
-                var item = JSON.parse(pendingItem);
-                addToCart(item.name, item.price);
-                sessionStorage.removeItem("pendingCartItem"); // Clear the pending item
+            function bindCartEvents() {
+                $(".add-to-cart-btn").click(function () {
+                    var button = $(this);
+                    var itemName = button.closest(".artwork-card").find("h3").text();
+                    var itemPrice = button.closest(".artwork-card").find("p:last").text().replace("INR ", "");
+
+                    $.ajax({
+                        url: '/Cart/IsUserLoggedIn',
+                        type: 'GET',
+                        success: function (isLoggedIn) {
+                            if (isLoggedIn) {
+                                addToCart(itemName, itemPrice);
+                            } else {
+                                sessionStorage.setItem("pendingCartItem", JSON.stringify({ name: itemName, price: itemPrice }));
+                                window.location.href = '/Account/Login';
+                            }
+                        },
+                        error: function () {
+                            alert("Error checking login status.");
+                        }
+                    });
+                });
             }
 
             function addToCart(name, price) {
@@ -271,6 +298,23 @@
                     }
                 });
             }
+
+            // Check for pending cart item after login
+            var pendingItem = sessionStorage.getItem("pendingCartItem");
+            if (pendingItem) {
+                var item = JSON.parse(pendingItem);
+                addToCart(item.name, item.price);
+                sessionStorage.removeItem("pendingCartItem");
+            }
+
+            // Refresh artworks if a new one was added
+            if (sessionStorage.getItem("newArtworkAdded")) {
+                refreshArtworks();
+                sessionStorage.removeItem("newArtworkAdded");
+            }
+
+            // Initial binding of cart events for static and existing dynamic cards
+            bindCartEvents();
         });
     </script>
 </body>
