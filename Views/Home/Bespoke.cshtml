@@ -1,168 +1,178 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Why RangShala</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+﻿@{
+    ViewBag.Title = "Bespoke Service - Rang Shala";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 50px;
-        }
-
-        .section-title {
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            border-bottom: 3px solid black;
-            display: inline-block;
-            padding-bottom: 5px;
-            text-align: left;
-            margin-left: -50px; /* Moves the title further left */
-        }
-
-        .why-rangshala-section {
-            text-align: left;
-            margin-bottom: 50px;
-            margin-left: -50px; /* Moves the entire section further left */
-        }
-
-        .why-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 100px; /* Increased gap between items */
-        }
-
-        .why-item {
-            flex: 1 1 180px;
-            max-width: 200px;
-            text-align: center;
-        }
-
-            .why-item img {
-                max-width: 80px; /* Reduced image size */
-                height: auto;
-                margin-bottom: 15px;
-            }
-
-            .why-item h3 {
-                font-size: 18px;
-                margin-bottom: 5px;
-            }
-
-            .why-item p {
-                font-size: 14px;
-                color: #555;
-            }
-
-        .art-advisory-section {
-            display: flex;
-            align-items: flex-start;
-            gap: 50px;
-        }
-
-        .form-container {
-            flex: 1;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        button {
-            background-color: black;
-            color: white;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-        }
-
-        .image-container {
-            flex: 1;
-            position: relative;
-            margin-top: 100px; /* Moves the image further down */
-        }
-
-            .image-container img {
-                width: 700px;
-                height:500px;
-                border-radius: 10px;
-                position: relative;
-            }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="why-rangshala-section">
-            <h1 class="section-title">Why RangShala?</h1>
-            <div class="why-row">
-                <div class="why-item">
-                    <img src="~/Images/Expert Advise.png" alt="Expert Advice">
-                    <h3>Expert Advice</h3>
-                    <p>We work to understand your requirements and how best to cater to them.</p>
-                </div>
-                <div class="why-item">
-                    <img src="~/Images/Idea.png" alt="Idea">
-                    <h3>Idea</h3>
-                    <p>We present a variety of tailor-made concepts for you to choose from.</p>
-                </div>
-                <div class="why-item">
-                    <img src="~/Images/choice.png" alt="Choice">
-                    <h3>Choice</h3>
-                    <p>Pick the artwork that matches the feel of your space.</p>
-                </div>
-                <div class="why-item">
-                    <img src="~/Images/Implementation.png" alt="Implementation">
-                    <h3>Implementation</h3>
-                    <p>We ensure that you receive authentic, professionally created artwork.</p>
-                </div>
+<div class="container">
+    <div class="why-rangshala-section">
+        <h1 class="section-title">Why RangShala?</h1>
+        <div class="why-row">
+            <div class="why-item">
+                <img src="~/Images/Expert Advise.png" alt="Expert Advice">
+                <h3>Expert Advice</h3>
+                <p>We work to understand your requirements and how best to cater to them.</p>
             </div>
-        </div>
-        <div class="art-advisory-section">
-            <div class="form-container">
-                <h1 class="section-title">Art Advisory Services</h1>
-                <p>Connect with our curators and team of experts to help you acquire the right artwork based on your needs or client's requirements.</p>
-                <p>If you are an interior designer or architect looking to purchase works for offices, homes, cafes, or large projects, please fill out the form below and we will get back to you.</p>
-                <form>
-                    <input type="text" placeholder="Name" required>
-                    <input type="text" placeholder="Company Name" required>
-                    <input type="text" placeholder="Designation" required>
-                    <input type="email" placeholder="Email Address" required>
-                    <select>
-                        <option>+91</option>
-                        <option>+1</option>
-                        <option>+44</option>
-                    </select>
-                    <input type="text" placeholder="Mobile No" required>
-                    <textarea placeholder="Enquiry" rows="4" required></textarea>
-                    <button type="submit">Send Enquiry</button>
-                </form>
+            <div class="why-item">
+                <img src="~/Images/Idea.png" alt="Idea">
+                <h3>Idea</h3>
+                <p>We present a variety of tailor-made concepts for you to choose from.</p>
             </div>
-            <div class="image-container">
-                <img src="~/Images/artwork-image.jpg" alt="Art Advisory">
+            <div class="why-item">
+                <img src="~/Images/choice.png" alt="Choice">
+                <h3>Choice</h3>
+                <p>Pick the artwork that matches the feel of your space.</p>
+            </div>
+            <div class="why-item">
+                <img src="~/Images/Implementation.png" alt="Implementation">
+                <h3>Implementation</h3>
+                <p>We ensure that you receive authentic, professionally created artwork.</p>
             </div>
         </div>
     </div>
-</body>
-</html>
+    <div class="art-advisory-section">
+        <div class="form-container">
+            <h1 class="section-title">Art Advisory Services</h1>
+            <p>Connect with our curators and team of experts to help you acquire the right artwork based on your needs or client's requirements.</p>
+            <p>If you are an interior designer or architect looking to purchase works for offices, homes, cafes, or large projects, please fill out the form below and we will get back to you.</p>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div style="color: green; margin-bottom: 15px;">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div style="color: red; margin-bottom: 15px;">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+
+            <form asp-action="SubmitArtAdvisory" asp-controller="Home" method="post">
+                <input type="text" name="Name" placeholder="Name" required>
+                <input type="text" name="CompanyName" placeholder="Company Name" required>
+                <input type="text" name="Designation" placeholder="Designation" required>
+                <input type="email" name="Email" placeholder="Email Address" required>
+                <select name="CountryCode">
+                    <option value="+91">+91</option>
+                    <option value="+1">+1</option>
+                    <option value="+44">+44</option>
+                </select>
+                <input type="text" name="MobileNo" placeholder="Mobile No" required>
+                <textarea name="Enquiry" placeholder="Enquiry" rows="4" required></textarea>
+                <button type="submit">Send Enquiry</button>
+            </form>
+        </div>
+        <div class="image-container">
+            <img src="~/Images/artwork-image.jpg" alt="Art Advisory">
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 50px;
+    }
+
+    .section-title {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        border-bottom: 3px solid black;
+        display: inline-block;
+        padding-bottom: 5px;
+        text-align: left;
+        margin-left: -50px; /* Moves the title further left */
+    }
+
+    .why-rangshala-section {
+        text-align: left;
+        margin-bottom: 50px;
+        margin-left: -50px; /* Moves the entire section further left */
+    }
+
+    .why-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 100px; /* Increased gap between items */
+    }
+
+    .why-item {
+        flex: 1 1 180px;
+        max-width: 200px;
+        text-align: center;
+    }
+
+        .why-item img {
+            max-width: 80px; /* Reduced image size */
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .why-item h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .why-item p {
+            font-size: 14px;
+            color: #555;
+        }
+
+    .art-advisory-section {
+        display: flex;
+        align-items: flex-start;
+        gap: 50px;
+    }
+
+    .form-container {
+        flex: 1;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    button {
+        background-color: black;
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    .image-container {
+        flex: 1;
+        position: relative;
+        margin-top: 100px; /* Moves the image further down */
+    }
+
+        .image-container img {
+            width: 700px;
+            height: 500px;
+            border-radius: 10px;
+            position: relative;
+        }
+</style>

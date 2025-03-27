@@ -3,6 +3,8 @@ namespace RangShala.Models
 {
     public class CartItem
     {
+        internal int ProductId;
+
         public int Id { get; set; }
         public string? Name { get; set; } // Changed to nullable string
         public int Quantity { get; set; }

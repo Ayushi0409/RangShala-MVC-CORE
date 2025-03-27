@@ -1,0 +1,52 @@
+﻿@model List<RangShala.Models.ArtAdvisoryEnquiry>
+
+@{
+    ViewBag.Title = "View Art Advisory Enquiries";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main-content">
+    <div class="top-bar">
+        <h1>Art Advisory Enquiries</h1>
+        <a href="@Url.Action("Logout", "Admin")" class="user-btn">AYUSHI BABARIYA</a>
+    </div>
+
+    <div style="background-color: #007bff; padding: 10px; color: white; font-size: 20px; margin-bottom: 20px;">
+        <i class="fas fa-list"></i> Submitted Enquiries
+    </div>
+
+    @if (Model.Any())
+    {
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th style="border: 1px solid #ddd; padding: 8px;">Name</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Company Name</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Designation</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Email</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Mobile No</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Enquiry</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Submission Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var enquiry in Model)
+                {
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;">@enquiry.Name</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">@enquiry.CompanyName</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">@enquiry.Designation</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">@enquiry.Email</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">@enquiry.CountryCode @enquiry.MobileNo</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">@enquiry.Enquiry</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">@enquiry.SubmissionDate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No enquiries found.</p>
+    }
+</div>

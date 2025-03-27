@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using RangShala.Data;
 using RangShala.Models;
 using RangShala.Services;
@@ -17,18 +18,18 @@ namespace RangShala.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ApplicationDbContext _dbContext;
         private readonly EmailService _emailService;
-        private readonly WeatherService _weatherService;
+        private readonly GoogleMapsSettings _googleMapsSettings;
 
         public HomeController(
             IWebHostEnvironment webHostEnvironment,
             ApplicationDbContext dbContext,
             EmailService emailService,
-            WeatherService weatherService)
+            IOptions<GoogleMapsSettings> googleMapsSettings)
         {
             _webHostEnvironment = webHostEnvironment;
             _dbContext = dbContext;
             _emailService = emailService;
-            _weatherService = weatherService;
+            _googleMapsSettings = googleMapsSettings.Value;
         }
 
         public IActionResult Search(string query)
@@ -56,11 +57,18 @@ namespace RangShala.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var weatherData = await _weatherService.GetWeatherAsync("Delhi");
-            ViewBag.Weather = weatherData;
-            return View();
+            ViewBag.ApiKey = _googleMapsSettings.ApiKey;
+
+            var mapData = new MapData
+            {
+                Latitude = 23.0225,  // Ahmedabad, Gujarat
+                Longitude = 72.5714,
+                Title = "RangShala Location"
+            };
+
+            return View(mapData);
         }
 
         public IActionResult About()
@@ -141,9 +149,86 @@ namespace RangShala.Controllers
             return View();
         }
 
-        public IActionResult BeSpokeservice()
+        public IActionResult BeSpokeService()
         {
-            return View();
+            return View("Bespoke"); // Explicitly specify the view name to match the file
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitArtAdvisory(string Name, string CompanyName, string Designation, string Email, string CountryCode, string MobileNo, string Enquiry)
+        {
+            try
+            {
+                // Save the form data to the database
+                var enquiry = new ArtAdvisoryEnquiry
+                {
+                    Name = Name,
+                    CompanyName = CompanyName,
+                    Designation = Designation,
+                    Email = Email,
+                    CountryCode = CountryCode,
+                    MobileNo = MobileNo,
+                    Enquiry = Enquiry,
+                    SubmissionDate = DateTime.Now
+                };
+
+                _dbContext.ArtAdvisoryEnquiries.Add(enquiry);
+                await _dbContext.SaveChangesAsync();
+
+                // Prepare the email body with form details
+                string subject = "New Art Advisory Enquiry from " + Name;
+                string body = $@"
+                    <h2>New Art Advisory Enquiry</h2>
+                    <p>We have received a new enquiry through the Art Advisory Services form on the Rang Shala website. Below are the details:</p>
+                    <ul>
+                        <li><strong>Name:</strong> {Name}</li>
+                        <li><strong>Company Name:</strong> {CompanyName}</li>
+                        <li><strong>Designation:</strong> {Designation}</li>
+                        <li><strong>Email:</strong> {Email}</li>
+                        <li><strong>Mobile No:</strong> {CountryCode} {MobileNo}</li>
+                        <li><strong>Enquiry:</strong> {Enquiry}</li>
+                        <li><strong>Submission Date:</strong> {enquiry.SubmissionDate}</li>
+                    </ul>
+                    <p>Please follow up with the client at your earliest convenience.</p>
+                    <p>Best regards,<br/>Rang Shala Team</p>";
+
+                // Send the email to the admin
+                await _emailService.SendEmailAsync("ayushibabariya4@gmail.com", subject, body);
+
+                // Send a confirmation email to the user
+                string userSubject = "Thank You for Your Enquiry - Rang Shala";
+                string userBody = $@"
+                    <h2>Hello {Name},</h2>
+                    <p>Thank you for reaching out to us through our Art Advisory Services form!</p>
+                    <p>We have received your enquiry, and our team will get back to you shortly. Below are the details you submitted:</p>
+                    <ul>
+                        <li><strong>Name:</strong> {Name}</li>
+                        <li><strong>Company Name:</strong> {CompanyName}</li>
+                        <li><strong>Designation:</strong> {Designation}</li>
+                        <li><strong>Email:</strong> {Email}</li>
+                        <li><strong>Mobile No:</strong> {CountryCode} {MobileNo}</li>
+                        <li><strong>Enquiry:</strong> {Enquiry}</li>
+                        <li><strong>Submission Date:</strong> {enquiry.SubmissionDate}</li>
+                    </ul>
+                    <p>If you have any further questions, feel free to contact us.</p>
+                    <p>Best regards,<br/>The Rang Shala Team</p>";
+
+                await _emailService.SendEmailAsync(Email, userSubject, userBody);
+
+                TempData["SuccessMessage"] = "Your enquiry has been submitted successfully! A confirmation email has been sent to your email address.";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "There was an error submitting your enquiry. Please try again later.";
+                Console.WriteLine($"Error saving enquiry or sending email: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
+            }
+
+            return RedirectToAction("BeSpokeService");
         }
 
         public IActionResult Ayushi()

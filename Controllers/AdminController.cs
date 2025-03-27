@@ -35,7 +35,6 @@ namespace RangShala.Controllers
                 Artworks = _adminContext.Artworks.Count(),
                 Customers = _adminContext.Customers.Count(),
                 Categories = _adminContext.Artworks.Select(a => a.Category).Distinct().Count(),
-                Orders = _adminContext.Orders.Count(),
                 ArtworkList = _adminContext.Artworks.ToList()
             };
 
@@ -78,7 +77,6 @@ namespace RangShala.Controllers
                 Artworks = _adminContext.Artworks.Count(),
                 Customers = _adminContext.Customers.Count(),
                 Categories = _adminContext.Artworks.Select(a => a.Category).Distinct().Count(),
-                Orders = _adminContext.Orders.Count(),
                 ArtworkList = _adminContext.Artworks.ToList()
             };
 
@@ -470,6 +468,17 @@ namespace RangShala.Controllers
             }
 
             return RedirectToAction("ViewCustomer");
+        }
+
+        public IActionResult ViewArtAdvisoryEnquiries()
+        {
+            if (HttpContext.Session.GetString("AdminEmail") == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var enquiries = _userContext.ArtAdvisoryEnquiries.ToList();
+            return View(enquiries);
         }
     }
 }

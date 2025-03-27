@@ -16,10 +16,12 @@ namespace RangShala.Data
         public DbSet<JoinApplication> JoinApplications { get; set; }
         public DbSet<OtpRecord> OtpRecords { get; set; }
         public DbSet<Payment> Payments { get; set; }
-
+        public DbSet<MapData> MapData { get; set; }
+        public DbSet<ArtAdvisoryEnquiry> ArtAdvisoryEnquiries { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<MapData>().ToTable("MapData");
 
             modelBuilder.Entity<CartItem>()
                 .Property(c => c.Price)

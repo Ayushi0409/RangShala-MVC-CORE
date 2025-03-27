@@ -51,6 +51,9 @@ builder.Services.AddScoped<Razorpay.Api.RazorpayClient>(sp =>
     return new Razorpay.Api.RazorpayClient(settings.KeyId, settings.KeySecret);
 });
 
+// Add Google Maps API Key configuration
+builder.Services.Configure<GoogleMapsSettings>(builder.Configuration.GetSection("GoogleMaps"));
+
 // Add configuration for design-time migrations (optional, but ensures consistency)
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
@@ -110,6 +113,7 @@ using (var scope = app.Services.CreateScope())
             logger.LogInformation("Default admin created successfully.");
         }
 
+
         if (!adminDbContext.Artworks.Any())
         {
             var defaultArtworks = new[]
@@ -142,3 +146,9 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+// Add this class to hold Google Maps settings
+public class GoogleMapsSettings
+{
+    public string ApiKey { get; set; }
+}
